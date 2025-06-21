@@ -2,20 +2,19 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import { ArrowUpRight, CircleCheck } from "lucide-react";
-import type { SubscriptionPlan } from "@/types/features";
+import type { MealPlan } from "@/types/features";
 import { cn } from "@/lib/utils";
 
 
 
 export default function CardMealPlan({ 
   name, 
-  price, 
+  price,
+  image, 
   description, 
   benefits, 
-  isPopular = false,
-  yearlyDiscount = 20 
-}: SubscriptionPlan) {
-  const discountedPrice = Math.round(price * ((100 - yearlyDiscount) / 100));
+  isPopular = false
+}: MealPlan) {
 
   return (
     <div
@@ -30,14 +29,25 @@ export default function CardMealPlan({
         </Badge>
       )}
       
-      <h3 className="text-lg font-medium">{name}</h3>
-      
-      <p className="mt-2 text-4xl font-bold">
-        ${discountedPrice}
-        <span className="ml-1.5 text-sm text-muted-foreground font-normal">
-          /month
-        </span>
-      </p>
+      <div className="flex flex-col items-center">
+        {image && (
+          <img
+            src={image}
+            alt={name}
+            className="w-128 h-48 mb-4 rounded-2xl object-cover"
+          />
+        )}
+      </div>
+
+      <div className="flex flex-row items-end justify-between">
+        <h3 className="text-2xl font-medium">{name}</h3>
+        <p className="mt-2 text-4xl font-bold">
+          Rp {price}
+          <span className="ml-1.5 text-2xl text-muted-foreground font-normal">
+            /meal
+          </span>
+        </p>
+      </div>
       
       <p className="mt-4 font-medium text-muted-foreground">
         {description}

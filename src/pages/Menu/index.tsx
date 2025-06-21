@@ -4,78 +4,58 @@ import CardMealPlan from '@/components/menu/card-meal-plan';
 
 const mealPlans = [
   {
-    name: "Breakfast Plan",
-    price: 20,
+    name: "Diet Plan",
+    price: 30000,
+    image: "../public/DietPlan.jpg",
     description:
-      "Get 20 AI-generated portraits with 2 unique styles and filters.",
+      "Balanced portions are low in calories, suitable for weight loss programs.",
     features: [
-      { title: "5 hours turnaround time" },
-      { title: "20 AI portraits" },
-      { title: "Choice of 2 styles" },
-      { title: "Choice of 2 filters" },
-      { title: "2 retouch credits" },
+      { title: "400 Calories" },
+      { title: "25 Protein" },
+      { title: "50 Carbs" },
+      { title: "10 Fat" },
     ],
   },
   {
-    name: "Lunch Plan",
-    price: 40,
+    name: "Protein Plan",
+    price: 40000,
+    image: "../public/ProteinPlan.jpg",
     description:
-      "Get 50 AI-generated portraits with 5 unique styles and filters.",
+      "High in protein to support muscle mass and recovery.",
     features: [
-      { title: "3 hours turnaround time" },
-      { title: "50 AI portraits" },
-      { title: "Choice of 5 styles" },
-      { title: "Choice of 5 filters" },
-      { title: "5 retouch credits" },
+      { title: "500 Calories" },
+      { title: "40 Protein" },
+      { title: "45 Carbs" },
+      { title: "15 Fat" },
     ],
     isPopular: true,
   },
   {
-    name: "Dinner Plan",
-    price: 80,
+    name: "Royal Plan",
+    price: 60000,
+    image: "../public/RoyalPlan.jpg",
     description:
-      "Get 100 AI-generated portraits with 10 unique styles and filters.",
+      "Premium combination with selected ingredients, larger portion.",
     features: [
-      { title: "1-hour turnaround time" },
-      { title: "100 AI portraits" },
-      { title: "Choice of 10 styles" },
-      { title: "Choice of 10 filters" },
-      { title: "10 retouch credits" },
+      { title: "700 Calories" },
+      { title: "35 Protein" },
+      { title: "80 Carbs" },
+      { title: "25 Fat" },
     ],
   },
 ];
 
-// const mealPlans = [
-//   {
-//     name: 'Breakfast Plan',
-//     image: "../public/vite.svg",
-//     price: 150000,
-//     description: "..."
-//   },
-//   {
-//     name: 'Lunch Plan',
-//     image: "../public/vite.svg",
-//     price: 150000,
-//     description: "..."
-//   },
-//   {
-//     name: 'Dinner Plan',
-//     image: "../public/vite.svg",
-//     price: 150000,
-//     description: "..."
-//   }
-// ]
-
 export default function MenuPlan() {
   return (
     <PageWithNavbar>
-     <div className="min-h-screen flex flex-col items-center justify-center gap-10">
+     <div className="min-h-screen flex flex-col items-center justify-center gap-7 pt-18">
         <h1 className="text-5xl font-bold text-center tracking-tight">Meal Plan</h1>
         <div className="flex items-center">
           {mealPlans.map((plan) => (
                   <CardMealPlan
                     name={plan.name}
                     price={plan.price}
+                    image={plan.image}
                     isPopular={plan.isPopular ?? false}
                     description={plan.description}
                     benefits={plan.features.map((feature) => feature.title)}
