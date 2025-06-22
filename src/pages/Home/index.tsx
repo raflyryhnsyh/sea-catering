@@ -1,7 +1,7 @@
-import KeyFeatures from '@/components/dashboard/key-features';
-import Footer from '@/components/dashboard/footer';
-import Overview from '@/components/dashboard/overview';
-import Testimonials from '@/components/dashboard/testimonials';
+import KeyFeatures from '@/components/home/key-features';
+import Footer from '@/components/home/footer';
+import Overview from '@/components/home/overview';
+import Testimonials from '@/components/home/testimonials';
 import PageWithNavbar from '@/layouts/PageWithNavbar';
 import { Edit, MonitorCheck, Truck } from "lucide-react";
 
