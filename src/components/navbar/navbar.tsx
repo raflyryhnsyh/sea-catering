@@ -3,6 +3,7 @@ import { Logo } from "./logo";
 import NavMenu from "./nav-menu";
 import { NavigationSheet } from "./nav-sheet";
 import ThemeToggle from "@/components/theme/theme-switcher";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -15,13 +16,9 @@ const Navbar = () => {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <Button
-              variant="outline"
-              className="hidden sm:inline-flex rounded-full"
-            >
-              Sign In
-            </Button>
-            <Button className="rounded-full">Get Started</Button>
+            <Link to="/login" className="hidden md:block">
+              <Button className="rounded-full">Get Started</Button>
+            </Link>
 
             {/* Mobile Menu */}
             <div className="md:hidden">

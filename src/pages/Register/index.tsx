@@ -1,12 +1,23 @@
-import { Button } from '@/components/ui/button';
+import { GalleryVerticalEnd } from "lucide-react"
+import { RegisterForm } from "@/components/register/form";
 
 export default function Register() {
   return (
-    <div>
-      <h1 className="text-red-500" >Welcome to Sea Catering</h1>
-        <Button variant="destructive" className="m-4">
-            Click Me
-        </Button>
+    <div className="grid min-h-svh lg:grid-cols-2">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-xs">
+            <RegisterForm />
+          </div>
+        </div>
+      </div>
+      <div className="bg-muted relative hidden lg:block">
+        <img
+          src="../../public/home.jpg"
+          alt="Image"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+        />
+      </div>
     </div>
   );
 }
