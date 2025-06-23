@@ -1,4 +1,4 @@
-import PageWithNavbar from '@/layouts/PageWithNavbar';
+import PageWithNavbar from '@/layouts/LandingLayout';
 import CardMealPlan from '@/components/menu/card-meal-plan';
 
 

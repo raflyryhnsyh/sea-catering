@@ -2,7 +2,6 @@ import KeyFeatures from '@/components/home/key-features';
 import Footer from '@/components/home/footer';
 import Overview from '@/components/home/overview';
 import Testimonials from '@/components/home/testimonials';
-import PageWithNavbar from '@/layouts/PageWithNavbar';
 import { Edit, MonitorCheck, Truck } from "lucide-react";
 
 const allFeatures = [
@@ -79,11 +78,10 @@ const testimonials = [
 
 export default function Dashboard() {
   return (
-    <PageWithNavbar>
-      <Overview />
-      <KeyFeatures features={allFeatures} />
-      <Testimonials testimonials={testimonials} />
-      <Footer />
-    </PageWithNavbar>
+      <div>
+        <Overview />
+        <KeyFeatures features={allFeatures} />
+        <Testimonials testimonials={testimonials} />
+      </div>
   );
 }

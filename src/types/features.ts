@@ -20,3 +20,9 @@ export interface Testimonial {
     comment: string;
     avatar: string;
 }
+
+export interface SidebarAdmin {
+    title: string;
+    url: string;
+    icon: React.ComponentType<any>;
+}

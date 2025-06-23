@@ -1,5 +1,4 @@
 
-import PageWithNavbar from "@/layouts/PageWithNavbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,7 +10,6 @@ import { Link } from "react-router-dom";
 
 export default function Contact() {
   return (
-    <PageWithNavbar>
       <div className="min-h-screen flex items-center justify-center pt-8">
         <div className="w-full max-w-screen-xl mx-auto px-6 xl:px-0">
           <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight">
@@ -142,6 +140,5 @@ export default function Contact() {
           </div>
         </div>
       </div>
-    </PageWithNavbar>
   );
 }

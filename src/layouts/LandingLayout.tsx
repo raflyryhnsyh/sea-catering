@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "@/components/navbar/navbar";
 
-function PageWithNavbar({ children }: { children: React.ReactNode }) {
+function LandingLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
         <Navbar />
@@ -12,4 +12,4 @@ function PageWithNavbar({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default PageWithNavbar;
+export default LandingLayout;

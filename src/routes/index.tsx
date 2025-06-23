@@ -1,28 +1,32 @@
 import { Route, Routes } from "react-router-dom";
-import {
-    Home,
-    DashboardUser,
-    Login,
-    Register,
-    Subcriptions,
-    Contact,
-    Menu,
-    DashboardAdmin,
-    NoPage
-} from "../pages";
+import LandingRoute from "./landing";
+import LandingLayout from "@/layouts/LandingLayout";
+import DashboardRoute from "./dashboard";
+import AdminLayout from "@/layouts/AdminLayout";
+import AdminRoute from "./admin";
+import DashboardLayout from "@/layouts/DashboardLayout";
+
 
 function BaseRoute() {
   return (
-    <Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/register" element={<Register />} />
-    <Route path="/subscriptions" element={<Subcriptions />} />
-    <Route path="/contact" element={<Contact />} />
-    <Route path="/menu" element={<Menu />} />
-    <Route path="/dashboard-user" element={<DashboardUser />} />
-    <Route path="/dashboard-admin" element={<DashboardAdmin />} />
-    <Route path="*" element={<NoPage />} />
+      <Routes>
+        <Route path="/*" element={
+          <LandingLayout>
+            <LandingRoute />
+          </LandingLayout>
+        } />
+        
+        <Route path="/dashboard/*" element={
+          <DashboardLayout>
+            <DashboardRoute />
+          </DashboardLayout>
+        } />
+        
+        <Route path="/admin/*" element={
+          <AdminLayout>
+            <AdminRoute />
+          </AdminLayout>
+        } />
     </Routes>
   );
 }
