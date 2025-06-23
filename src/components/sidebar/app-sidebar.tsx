@@ -19,11 +19,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const data = {
+// Data untuk admin
+const adminData = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Admin User",
+    email: "admin@example.com",
+    avatar: "/avatars/admin.jpg",
   },
   navMain: [
     {
@@ -49,7 +50,30 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+// Data untuk user biasa
+const userData = {
+  user: {
+    name: "Regular User",
+    email: "user@example.com",
+    avatar: "/avatars/user.jpg",
+  },
+  navMain: [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: IconDashboard,
+    },
+  ],
+}
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  userRole: 'admin' | 'user';
+}
+
+export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
+  // Pilih data berdasarkan role
+  const data = userRole === 'admin' ? adminData : userData
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -59,7 +83,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <a href="">
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">Sea Catering</span>
               </a>
