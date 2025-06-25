@@ -1,5 +1,4 @@
 import KeyFeatures from '@/components/home/key-features';
-import Footer from '@/components/home/footer';
 import Overview from '@/components/home/overview';
 import Testimonials from '@/components/home/testimonials';
 import { Edit, MonitorCheck, Truck } from "lucide-react";
@@ -78,10 +77,10 @@ const testimonials = [
 
 export default function Dashboard() {
   return (
-      <div>
-        <Overview />
-        <KeyFeatures features={allFeatures} />
-        <Testimonials testimonials={testimonials} />
-      </div>
+    <div className="pt-20">
+      <Overview />
+      <KeyFeatures features={allFeatures} />
+      <Testimonials testimonials={testimonials} />
+    </div>
   );
 }
