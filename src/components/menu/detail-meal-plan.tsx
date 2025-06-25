@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
-import { CircleCheck, X } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 import type { MealPlan } from "@/types/features";
 import { useNavigate } from "react-router-dom";
 

@@ -8,8 +8,6 @@ import {
   Package,
   Settings,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/lib/db";
 
 const invoices = [
   {
