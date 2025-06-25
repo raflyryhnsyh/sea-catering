@@ -5,9 +5,10 @@ import { ArrowUpRight, CircleCheck } from "lucide-react";
 import type { MealPlan } from "@/types/features";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import MealPlanDetail from "./detail-meal-plan";
+import MealPlanDetailModal from "./detail-meal-plan";
 
 export default function CardMealPlan({
+  id,
   name,
   price,
   image,
@@ -15,9 +16,10 @@ export default function CardMealPlan({
   benefits,
   isPopular = false
 }: MealPlan) {
-  const [isDetailModalOpen, setIsDetailOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   const mealPlanData: MealPlan = {
+    id,
     name,
     price,
     image,
@@ -30,65 +32,61 @@ export default function CardMealPlan({
     <>
       <div
         className={cn("relative p-6 bg-background border px-8 rounded-lg", {
-          "shadow-[0px_2px_10px_0px_rgba(0,0,0,0.1)] py-14 z-[1] px-10 overflow-hidden":
+          // Reduced z-index untuk popular card agar tidak menutupi navbar
+          "shadow-[0px_2px_10px_0px_rgba(0,0,0,0.1)] py-14 z-10 px-10 lg:-mx-2 overflow-hidden":
             isPopular,
         })}
       >
         {isPopular && (
-          <Badge className="absolute top-4 right-4 rounded-full px-3 py-1 uppercase text-xs">
+          <Badge className="absolute top-10 right-10 rotate-[45deg] rounded-none px-10 uppercase translate-x-1/2 -translate-y-1/2 z-20">
             Most Popular
           </Badge>
         )}
 
-        <div className="flex flex-col items-center">
+        {/* Image Section */}
+        <div className="flex flex-col items-center mb-6">
           {image && (
             <img
               src={image}
               alt={name}
-              className="w-128 h-48 mb-4 rounded-2xl object-cover"
+              className="w-full h-48 mb-4 rounded-2xl object-cover"
             />
           )}
         </div>
 
-        <div className="flex flex-row items-end justify-between">
-          <h3 className="text-2xl font-medium">{name}</h3>
-          <p className="mt-2 text-4xl font-bold">
-            Rp {price}
-            <span className="ml-1.5 text-2xl text-muted-foreground font-normal">
-              /meal
-            </span>
-          </p>
-        </div>
+        {/* Title */}
+        <h3 className="text-lg font-medium">{name}</h3>
 
+        {/* Price */}
+        <p className="mt-2 text-4xl font-bold">
+          Rp {price?.toLocaleString()}
+          <span className="ml-1.5 text-sm text-muted-foreground font-normal">
+            /meal
+          </span>
+        </p>
+
+        {/* Description */}
         <p className="mt-4 font-medium text-muted-foreground">
           {description}
         </p>
 
+        {/* CTA Button */}
         <Button
           variant={isPopular ? "default" : "outline"}
           size="lg"
           className="w-full mt-6 rounded-full text-base"
-          onClick={() => setIsDetailOpen(true)}
+          onClick={() => setIsDetailModalOpen(true)}
         >
           See More Details <ArrowUpRight className="w-4 h-4 ml-2" />
         </Button>
 
         <Separator className="my-8" />
-
-        <ul className="space-y-3">
-          {benefits.map((benefit, index) => (
-            <li key={index} className="flex items-start gap-3">
-              <CircleCheck className="h-4 w-4 mt-1 text-green-600 flex-shrink-0" />
-              <span className="text-sm">{benefit}</span>
-            </li>
-          ))}
-        </ul>
       </div>
 
-      <MealPlanDetail
+      <MealPlanDetailModal
         mealPlan={mealPlanData}
         isOpen={isDetailModalOpen}
-        onClose={() => setIsDetailOpen(false)}
+        onClose={() => setIsDetailModalOpen(false)}
       />
     </>
   );
