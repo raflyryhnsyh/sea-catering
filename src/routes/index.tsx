@@ -1,3 +1,4 @@
+// filepath: d:\Codelabs\COMPFEST_SEA_17\Submission\sea-catering-fe\src\routes\index.tsx
 import { Route, Routes } from "react-router-dom";
 import LandingRoute from "./landing";
 import LandingLayout from "@/layouts/LandingLayout";
@@ -9,41 +10,46 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import { NoPage } from "@/pages";
 import ForgotPassword from "@/pages/ForgotPassword";
-
+import { AuthProvider } from "@/hooks/AuthContext";
+import { ProtectedRoute } from "@/routes/ProtectedRoute";
 
 function BaseRoute() {
   return (
+    <AuthProvider>
       <Routes>
+        {/* Landing pages - auth context available */}
+        <Route path="/*" element={
+          <LandingLayout>
+            <LandingRoute />
+          </LandingLayout>
+        } />
 
-      {/* Landing pages with LandingLayout */}
-      <Route path="/*" element={
-        <LandingLayout>
-          <LandingRoute />
-        </LandingLayout>
-      } />
-      
-      {/* Dashboard with DashboardLayout */}
-      <Route path="/dashboard/*" element={
-        <DashboardLayout>
-          <DashboardRoute />
-        </DashboardLayout>
-      } />
-      
-      {/* Admin Dashboard with AdminLayout */}
-      <Route path="/admin/*" element={
-        <AdminLayout>
-          <AdminRoute />
-        </AdminLayout>
-      } />
+        {/* Auth pages */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot" element={<ForgotPassword />} />
 
-      {/* Login, Register, Forgot Password */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot" element={<ForgotPassword />} />
-      
-      {/* Catch-all route for 404 */}
-      <Route path="*" element={<NoPage />} />
-    </Routes>
+        {/* Protected Dashboard */}
+        <Route path="/dashboard/*" element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <DashboardRoute />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+
+        {/* Protected Admin */}
+        <Route path="/admin/*" element={
+          <ProtectedRoute>
+            <AdminLayout>
+              <AdminRoute />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="*" element={<NoPage />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

@@ -53,6 +53,7 @@ export default function MenuPlan() {
         <div className="flex items-center">
           {mealPlans.map((plan) => (
                   <CardMealPlan
+                    key={plan.name}
                     name={plan.name}
                     price={plan.price}
                     image={plan.image}

@@ -8,6 +8,8 @@ import {
   Package,
   Settings,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/lib/db";
 
 const invoices = [
   {
@@ -31,8 +33,10 @@ const invoices = [
 ];
 
 export default function DashboardUser() {
+
+
   return (
-      <div className="container mx-auto px-4 py-6 md:px-6 2xl:max-w-[1400px]">
+    <div className="container mx-auto px-4 py-6 md:px-6 2xl:max-w-[1400px]">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row">

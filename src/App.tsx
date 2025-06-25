@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import BaseRoute from "./routes";
 import { ThemeProvider } from "./components/theme/theme-provider";
@@ -11,9 +12,9 @@ function App() {
         defaultTheme="system"
         enableSystem
         disableTransitionOnChange>
-          <Router>
-            <BaseRoute />
-          </Router>
+        <Router>
+          <BaseRoute />
+        </Router>
       </ThemeProvider>
     </>
   )
