@@ -2,6 +2,7 @@ import KeyFeatures from '@/components/home/key-features';
 import Overview from '@/components/home/overview';
 import Testimonials from '@/components/home/testimonials';
 import { Edit, MonitorCheck, Truck } from "lucide-react";
+import { useEffect, useState } from 'react';
 
 const allFeatures = [
   {
@@ -76,6 +77,26 @@ const testimonials = [
 ];
 
 export default function Dashboard() {
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center pt-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <p className="mt-4 text-muted-foreground">Loading home...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="pt-20">
       <Overview />
