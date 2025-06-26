@@ -1,0 +1,199 @@
+import { supabase } from '@/lib/db';
+
+export interface CreateSubscriptionData {
+    phone_number: string;
+    plan_id: number;
+    meal_type: string[];
+    delivery_days: string[];
+    allergies?: string;
+}
+
+export interface Subscription {
+    id: number;
+    user_id: string;
+    phone_number: string;
+    plan_id: number;
+    meal_type: string[];
+    delivery_days: string[];
+    allergies?: string;
+    status: string;
+    start_date: string;
+    end_date: string;
+    pause_period_start?: string;
+    pause_period_end?: string;
+}
+
+export const subscriptionService = {
+    async createSubscription(data: CreateSubscriptionData) {
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (!user) {
+                throw new Error('User not authenticated');
+            }
+
+            // Calculate end date (30 days from now)
+            const startDate = new Date();
+            const endDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+            const subscriptionData = {
+                user_id: user.id,
+                phone_number: data.phone_number,
+                plan_id: data.plan_id,
+                meal_type: data.meal_type,
+                delivery_days: data.delivery_days,
+                allergies: data.allergies || null,
+                status: 'ACTIVE',
+                start_date: startDate.toISOString().split('T')[0], // Format as date only
+                end_date: endDate.toISOString().split('T')[0], // Format as date only
+            };
+
+            const { data: subscription, error } = await supabase
+                .from('subscriptions')
+                .insert([subscriptionData])
+                .select()
+                .single();
+
+            if (error) {
+                console.error('Subscription creation error:', error);
+                throw error;
+            }
+
+            return { data: subscription, error: null };
+        } catch (error) {
+            console.error('Subscription service error:', error);
+            return { data: null, error };
+        }
+    },
+
+    async getUserSubscriptions(userId?: string) {
+        try {
+            let query = supabase.from('subscriptions').select('*');
+
+            if (userId) {
+                query = query.eq('user_id', userId);
+            } else {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) {
+                    throw new Error('User not authenticated');
+                }
+                query = query.eq('user_id', user.id);
+            }
+
+            const { data, error } = await query.order('id', { ascending: false });
+
+            if (error) {
+                console.error('Error fetching subscriptions:', error);
+                throw error;
+            }
+
+            return { data: data || [], error: null };
+        } catch (error) {
+            console.error('Get subscriptions error:', error);
+            return { data: [], error };
+        }
+    },
+
+    async getActiveSubscription(userId?: string) {
+        try {
+            let query = supabase
+                .from('subscriptions')
+                .select('*')
+                .eq('status', 'ACTIVE')
+                .gte('end_date', new Date().toISOString().split('T')[0]);
+
+            if (userId) {
+                query = query.eq('user_id', userId);
+            } else {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) {
+                    throw new Error('User not authenticated');
+                }
+                query = query.eq('user_id', user.id);
+            }
+
+            const { data, error } = await query.single();
+
+            if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+                console.error('Error fetching active subscription:', error);
+                throw error;
+            }
+
+            return { data: data || null, error: null };
+        } catch (error) {
+            console.error('Get active subscription error:', error);
+            return { data: null, error };
+        }
+    },
+
+    async cancelSubscription(subscriptionId: number) {
+        try {
+            const { data, error } = await supabase
+                .from('subscriptions')
+                .update({ status: 'CANCELLED' })
+                .eq('id', subscriptionId)
+                .select()
+                .single();
+
+            if (error) {
+                console.error('Error cancelling subscription:', error);
+                throw error;
+            }
+
+            return { data, error: null };
+        } catch (error) {
+            console.error('Cancel subscription error:', error);
+            return { data: null, error };
+        }
+    },
+
+    async pauseSubscription(subscriptionId: number, pauseStart: string, pauseEnd: string) {
+        try {
+            const { data, error } = await supabase
+                .from('subscriptions')
+                .update({
+                    status: 'PAUSED',
+                    pause_period_start: pauseStart,
+                    pause_period_end: pauseEnd
+                })
+                .eq('id', subscriptionId)
+                .select()
+                .single();
+
+            if (error) {
+                console.error('Error pausing subscription:', error);
+                throw error;
+            }
+
+            return { data, error: null };
+        } catch (error) {
+            console.error('Pause subscription error:', error);
+            return { data: null, error };
+        }
+    },
+
+    async resumeSubscription(subscriptionId: number) {
+        try {
+            const { data, error } = await supabase
+                .from('subscriptions')
+                .update({
+                    status: 'ACTIVE',
+                    pause_period_start: null,
+                    pause_period_end: null
+                })
+                .eq('id', subscriptionId)
+                .select()
+                .single();
+
+            if (error) {
+                console.error('Error resuming subscription:', error);
+                throw error;
+            }
+
+            return { data, error: null };
+        } catch (error) {
+            console.error('Resume subscription error:', error);
+            return { data: null, error };
+        }
+    }
+};

@@ -2,6 +2,7 @@ import * as React from "react"
 import {
   IconChartBar,
   IconDashboard,
+  IconHome,
   IconFolder,
   IconInnerShadowTop,
   IconListDetails,
@@ -62,6 +63,11 @@ const userData = {
       title: "Dashboard",
       url: "/dashboard",
       icon: IconDashboard,
+    },
+    {
+      title: "Back to Home",
+      url: "/",
+      icon: IconHome,
     },
   ],
 }
