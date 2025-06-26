@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, MapPin, Phone, Utensils, Pause, Play, CalendarX } from "lucide-react";
+import { Calendar, Clock, MapPin, Phone, Utensils, Pause, CalendarX } from "lucide-react";
 import { useAuth } from "@/hooks/AuthContext";
 import { subscriptionService, type Subscription } from "@/services/subscription-service";
 import PauseDialog from "@/components/dashboard/pause-dialog";
