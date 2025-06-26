@@ -1,5 +1,9 @@
 import { Separator } from "@/components/ui/separator"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar"
+import { IconHome } from "@tabler/icons-react"
+
+import { Link } from "react-router-dom"
+
 
 export function SiteHeader() {
   return (
@@ -10,7 +14,18 @@ export function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <h1 className="text-base font-medium">Documents</h1>
+
+        <div className="flex flex-row items-center justify-between w-full">
+          <h1 className="text-base font-medium">Navigate</h1>
+          <div>
+            <SidebarMenuButton className="text-base font-medium">
+              <Link to="/" className="flex items-center">
+                <IconHome className="mr-2 h-4 w-4" />
+                Back to Home
+              </Link>
+            </SidebarMenuButton>
+          </div>
+        </div>
       </div>
     </header>
   )

@@ -27,3 +27,9 @@ export interface SidebarAdmin {
     url: string;
     icon: React.ComponentType<any>;
 }
+
+export interface SidebarUser {
+    title: string;
+    url: string;
+    icon: React.ComponentType<any>;
+}

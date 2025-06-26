@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, MapPin, Phone, Utensils } from "lucide-react";
+import { Calendar, Clock, MapPin, Phone, Utensils, Pause, Play, CalendarX } from "lucide-react";
 import { useAuth } from "@/hooks/AuthContext";
 import { subscriptionService, type Subscription } from "@/services/subscription-service";
+import PauseDialog from "@/components/dashboard/pause-dialog";
 
 export default function DashboardUser() {
   const { user } = useAuth();
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [activeSubscription, setActiveSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showPauseDialog, setShowPauseDialog] = useState(false);
 
   useEffect(() => {
     const fetchSubscriptions = async () => {
@@ -25,7 +27,7 @@ export default function DashboardUser() {
 
         setSubscriptions(data);
 
-        // Find active subscription
+        // Find active subscription (ACTIVE status and not expired)
         const active = data.find(sub =>
           sub.status === 'ACTIVE' &&
           new Date(sub.end_date) > new Date()
@@ -52,19 +54,21 @@ export default function DashboardUser() {
         return;
       }
 
-      // Refresh subscriptions after cancellation
-      const { data } = await subscriptionService.getUserSubscriptions();
-      setSubscriptions(data);
-
-      // Update active subscription
-      const active = data.find(sub =>
-        sub.status === 'ACTIVE' &&
-        new Date(sub.end_date) > new Date()
-      );
-      setActiveSubscription(active || null);
+      await refreshSubscriptions();
     } catch (error) {
       console.error('Cancel subscription error:', error);
     }
+  };
+
+  const refreshSubscriptions = async () => {
+    const { data } = await subscriptionService.getUserSubscriptions();
+    setSubscriptions(data);
+
+    const active = data.find(sub =>
+      sub.status === 'ACTIVE' &&
+      new Date(sub.end_date) > new Date()
+    );
+    setActiveSubscription(active || null);
   };
 
   const formatDate = (dateString: string) => {
@@ -80,11 +84,9 @@ export default function DashboardUser() {
       let types: string[] = [];
 
       if (typeof mealTypes === 'string') {
-        // If it's a JSON string, parse it
         if (mealTypes.startsWith('[') || mealTypes.startsWith('{')) {
           types = JSON.parse(mealTypes);
         } else {
-          // If it's a comma-separated string
           types = mealTypes.split(',').map(s => s.trim());
         }
       } else if (Array.isArray(mealTypes)) {
@@ -111,11 +113,9 @@ export default function DashboardUser() {
       let daysList: string[] = [];
 
       if (typeof days === 'string') {
-        // If it's a JSON string, parse it
         if (days.startsWith('[') || days.startsWith('{')) {
           daysList = JSON.parse(days);
         } else {
-          // If it's a comma-separated string
           daysList = days.split(',').map(s => s.trim());
         }
       } else if (Array.isArray(days)) {
@@ -159,6 +159,25 @@ export default function DashboardUser() {
     }
   };
 
+  const hasActivePausePeriod = (subscription: Subscription) => {
+    if (!subscription.pause_period_start || !subscription.pause_period_end) return false;
+
+    const today = new Date();
+    const pauseStart = new Date(subscription.pause_period_start);
+    const pauseEnd = new Date(subscription.pause_period_end);
+
+    return today >= pauseStart && today <= pauseEnd;
+  };
+
+  const hasUpcomingPausePeriod = (subscription: Subscription) => {
+    if (!subscription.pause_period_start || !subscription.pause_period_end) return false;
+
+    const today = new Date();
+    const pauseStart = new Date(subscription.pause_period_start);
+
+    return today < pauseStart;
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -188,7 +207,6 @@ export default function DashboardUser() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
-                  <Utensils className="h-5 w-5" />
                   Active Subscription
                 </CardTitle>
                 <Badge className={getStatusColor(activeSubscription.status)}>
@@ -243,6 +261,45 @@ export default function DashboardUser() {
                 </div>
               </div>
 
+              {/* Pause Period Information */}
+              {activeSubscription.pause_period_start && activeSubscription.pause_period_end && (
+                <div className="pt-3 border-t">
+                  {hasActivePausePeriod(activeSubscription) ? (
+                    <div className="bg-yellow-50 p-4 rounded-md">
+                      <div className="flex items-center gap-2 mb-2">
+                        <CalendarX className="h-4 w-4 text-yellow-600" />
+                        <span className="font-medium text-yellow-800">Delivery Currently Paused</span>
+                      </div>
+                      <div className="text-sm text-yellow-700">
+                        <p>No deliveries from {formatDate(activeSubscription.pause_period_start)} to {formatDate(activeSubscription.pause_period_end)}</p>
+                        <p className="mt-1">Deliveries will resume automatically after {formatDate(activeSubscription.pause_period_end)}</p>
+                      </div>
+                    </div>
+                  ) : hasUpcomingPausePeriod(activeSubscription) ? (
+                    <div className="bg-blue-50 p-4 rounded-md">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Calendar className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium text-blue-800">Upcoming Delivery Pause</span>
+                      </div>
+                      <div className="text-sm text-blue-700">
+                        <p>Deliveries will be paused from {formatDate(activeSubscription.pause_period_start)} to {formatDate(activeSubscription.pause_period_end)}</p>
+                        <p className="mt-1">No meals will be delivered during this period</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-gray-50 p-4 rounded-md">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Calendar className="h-4 w-4 text-gray-600" />
+                        <span className="font-medium text-gray-800">Previous Delivery Pause</span>
+                      </div>
+                      <div className="text-sm text-gray-700">
+                        <p>Deliveries were paused from {formatDate(activeSubscription.pause_period_start)} to {formatDate(activeSubscription.pause_period_end)}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {activeSubscription.allergies && (
                 <div className="pt-3 border-t">
                   <span className="font-medium">Allergies/Special Requests:</span>
@@ -250,7 +307,16 @@ export default function DashboardUser() {
                 </div>
               )}
 
-              <div className="pt-4 border-t">
+              <div className="pt-4 border-t flex gap-2 flex-wrap">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowPauseDialog(true)}
+                  className="flex items-center gap-2"
+                >
+                  <Pause className="h-4 w-4" />
+                  Pause Delivery
+                </Button>
+
                 <Button
                   variant="destructive"
                   onClick={() => handleCancelSubscription(activeSubscription.id)}
@@ -302,6 +368,11 @@ export default function DashboardUser() {
                       <div className="text-sm text-muted-foreground">
                         Meals: {formatMealTypes(subscription.meal_type)}
                       </div>
+                      {subscription.pause_period_start && subscription.pause_period_end && (
+                        <div className="text-sm text-orange-600">
+                          Delivery paused: {formatDate(subscription.pause_period_start)} - {formatDate(subscription.pause_period_end)}
+                        </div>
+                      )}
                     </div>
                     <div className="text-right">
                       <div className="text-sm text-muted-foreground">
@@ -315,6 +386,16 @@ export default function DashboardUser() {
           </Card>
         )}
       </div>
+
+      {/* Pause Dialog */}
+      {activeSubscription && (
+        <PauseDialog
+          isOpen={showPauseDialog}
+          onClose={() => setShowPauseDialog(false)}
+          subscription={activeSubscription}
+          onSuccess={refreshSubscriptions}
+        />
+      )}
     </div>
   );
 }

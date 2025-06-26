@@ -19,66 +19,57 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-
-// Data untuk admin
-const adminData = {
-  user: {
-    name: "Admin User",
-    email: "admin@example.com",
-    avatar: "/avatars/admin.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/admin",
-      icon: IconDashboard,
-    },
-    {
-      title: "Catering Menu",
-      url: "/admin/menu",
-      icon: IconListDetails,
-    },
-    {
-      title: "Orders",
-      url: "/admin/orders",
-      icon: IconChartBar,
-    },
-    {
-      title: "Users",
-      url: "/admin/users",
-      icon: IconFolder,
-    },
-  ],
-}
-
-// Data untuk user biasa
-const userData = {
-  user: {
-    name: "Regular User",
-    email: "user@example.com",
-    avatar: "/avatars/user.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: IconDashboard,
-    },
-    {
-      title: "Back to Home",
-      url: "/",
-      icon: IconHome,
-    },
-  ],
-}
+import { useAuth } from "@/hooks/AuthContext"
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   userRole: 'admin' | 'user';
 }
 
 export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
-  // Pilih data berdasarkan role
-  const data = userRole === 'admin' ? adminData : userData
+  const { user } = useAuth()
+
+  // Navigation items berdasarkan role
+  const getNavItems = () => {
+    if (userRole === 'admin') {
+      return [
+        {
+          title: "Dashboard",
+          url: "/admin",
+          icon: IconDashboard,
+        },
+        {
+          title: "Catering Menu",
+          url: "/admin/menu",
+          icon: IconListDetails,
+        },
+        {
+          title: "Orders",
+          url: "/admin/orders",
+          icon: IconChartBar,
+        },
+        {
+          title: "Users",
+          url: "/admin/users",
+          icon: IconFolder,
+        },
+      ]
+    } else {
+      return [
+        {
+          title: "Dashboard",
+          url: "/dashboard",
+          icon: IconDashboard,
+        },
+      ]
+    }
+  }
+
+  // User data dari auth context
+  const userData = {
+    name: user?.user_metadata?.full_name || user?.email || "User",
+    email: user?.email || "user@example.com",
+    avatar: user?.user_metadata?.avatar_url || "/avatars/default.jpg",
+  }
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -89,7 +80,7 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="">
+              <a href="/">
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">Sea Catering</span>
               </a>
@@ -98,10 +89,10 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={getNavItems()} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={userData} />
       </SidebarFooter>
     </Sidebar>
   )
