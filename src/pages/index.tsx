@@ -1,4 +1,5 @@
 import Home from "./Home";
+import Profile from "./Profile";
 import DashboardUser from "./Dashboard/user";
 import Contact from "./Contact";
 import DashboardAdmin from "./Dashboard/admin/home";
@@ -10,6 +11,7 @@ import NoPage from "./Error";
 
 export {
     Home,
+    Profile,
     DashboardUser,
     DashboardAdmin,
     Contact,

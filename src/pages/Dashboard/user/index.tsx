@@ -219,13 +219,6 @@ export default function DashboardUser() {
     }
   };
 
-  // Check if subscription is expired (even if status is still ACTIVE)
-  const isSubscriptionExpired = (subscription: Subscription) => {
-    const today = new Date();
-    const endDate = new Date(subscription.end_date);
-    return endDate < today;
-  };
-
   const hasActivePausePeriod = (subscription: Subscription) => {
     if (!subscription.pause_periode_start || !subscription.pause_periode_end) return false;
 

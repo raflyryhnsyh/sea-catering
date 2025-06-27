@@ -6,9 +6,7 @@ import DashboardRoute from "./dashboard";
 import AdminLayout from "@/layouts/AdminLayout";
 import AdminRoute from "./admin";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
-import { NoPage } from "@/pages";
+import { NoPage, Profile, Login, Register } from "@/pages";
 import ForgotPassword from "@/pages/ForgotPassword";
 import { AuthProvider } from "@/hooks/AuthContext";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
@@ -28,6 +26,14 @@ function BaseRoute() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot" element={<ForgotPassword />} />
+
+        {/* Protected Profile */}
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } />
+
 
         {/* Protected Dashboard */}
         <Route path="/dashboard/*" element={
