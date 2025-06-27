@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/AuthContext";
 
 export function RegisterForm({
@@ -11,7 +11,7 @@ export function RegisterForm({
   ...props
 }: React.ComponentProps<"form">) {
   const navigate = useNavigate();
-  const { signUp, loading } = useAuth();
+  const { signUp, signInWithGoogle, loading } = useAuth();
 
   const [formData, setFormData] = useState({
     fullname: "",
@@ -75,6 +75,15 @@ export function RegisterForm({
     }
   };
 
+  const handleGoogleSignUp = async () => {
+    setMessage("");
+    const { error } = await signInWithGoogle();
+
+    if (error) {
+      setMessage(error.message);
+    }
+  };
+
   return (
     <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
@@ -86,8 +95,8 @@ export function RegisterForm({
 
       {message && (
         <div className={`p-3 rounded-md text-sm ${message.includes('successful')
-            ? 'bg-green-50 text-green-800 border border-green-200'
-            : 'bg-red-50 text-red-800 border border-red-200'
+          ? 'bg-green-50 text-green-800 border border-green-200'
+          : 'bg-red-50 text-red-800 border border-red-200'
           }`}>
           {message}
         </div>
@@ -154,7 +163,7 @@ export function RegisterForm({
             Or continue with
           </span>
         </div>
-        <Button variant="outline" className="w-full" disabled={loading}>
+        <Button variant="outline" className="w-full" disabled={loading} onClick={handleGoogleSignUp}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 533.5 544.3"
@@ -183,9 +192,9 @@ export function RegisterForm({
       </div>
       <div className="text-center text-sm">
         Already have an account?{" "}
-        <a href="/login" className="underline underline-offset-4">
-          Sign in
-        </a>
+        <Link to="/login" className="underline underline-offset-4">
+          Sign In
+        </Link>
       </div>
     </form>
   );

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/db';
+import { Link } from 'react-router-dom';
 
 interface AuthContextType {
     user: User | null;
@@ -9,6 +10,7 @@ interface AuthContextType {
     loading: boolean;
     signUp: (email: string, password: string, fullName?: string) => Promise<{ data: any; error: any }>;
     signIn: (email: string, password: string) => Promise<{ data: any; error: any }>;
+    signInWithGoogle: () => Promise<{ data: any; error: any }>;
     signOut: () => Promise<{ error: any }>;
     resetPassword: (email: string) => Promise<{ data: any; error: any }>;
 }
@@ -145,12 +147,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
+    const signInWithGoogle = async () => {
+        setLoading(true);
+        try {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: `${window.location.origin}/dashboard`
+                }
+            });
+            return { data, error };
+        } catch (error) {
+            return { data: null, error };
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const value: AuthContextType = {
         user,
         session,
         loading,
         signUp,
         signIn,
+        signInWithGoogle,
         signOut,
         resetPassword,
     };
@@ -177,7 +197,7 @@ export const useRequireAuth = () => {
     useEffect(() => {
         if (!loading && !user) {
             // Redirect ke login jika tidak authenticated
-            window.location.href = '/login';
+            <Link to="/login" />;
         }
     }, [user, loading]);
 
