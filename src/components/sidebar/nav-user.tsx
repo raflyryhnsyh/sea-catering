@@ -15,6 +15,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { useAuth } from "@/hooks/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 interface NavUserProps {
   user: {
@@ -27,6 +28,7 @@ interface NavUserProps {
 export function NavUser({ user }: NavUserProps) {
   const { isMobile } = useSidebar()
   const { signOut } = useAuth()
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
     try {
@@ -36,6 +38,7 @@ export function NavUser({ user }: NavUserProps) {
     }
   }
 
+
   // Get initials for avatar fallback
   const getInitials = (name: string) => {
     return name
@@ -44,6 +47,10 @@ export function NavUser({ user }: NavUserProps) {
       .join('')
       .toUpperCase()
       .slice(0, 2)
+  }
+
+  const profile = () => {
+    navigate('/profile')
   }
 
   return (
@@ -89,7 +96,7 @@ export function NavUser({ user }: NavUserProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={undefined} className="cursor-pointer">
+            <DropdownMenuItem onClick={profile} className="cursor-pointer">
               <User className="mr-2 h-4 w-4" />
               Profile
             </DropdownMenuItem>

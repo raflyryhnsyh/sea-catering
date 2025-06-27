@@ -35,7 +35,7 @@ export const NavigationSheet = () => {
       </SheetTrigger>
       <SheetContent>
         <Logo />
-        <NavMenu orientation="vertical" className="mt-12" />
+        <NavMenu orientation="vertical" className="" />
 
         {/* User Section in Mobile Sheet */}
         {user ? (
@@ -62,6 +62,16 @@ export const NavigationSheet = () => {
                 <Link to="/dashboard">
                   <IconDashboard className="mr-2 h-4 w-4" />
                   Dashboard
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                asChild
+              >
+                <Link to="/profile">
+                  <IconDashboard className="mr-2 h-4 w-4" />
+                  Profile
                 </Link>
               </Button>
               <Button
