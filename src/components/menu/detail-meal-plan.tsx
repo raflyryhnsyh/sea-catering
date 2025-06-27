@@ -59,7 +59,7 @@ export default function MealPlanDetail({
                     {/* Price */}
                     <div className="text-center">
                         <p className="text-4xl font-bold text-primary">
-                            Rp {mealPlan.price}
+                            Rp {mealPlan.price.toLocaleString()}
                             <span className="ml-2 text-2xl text-muted-foreground font-normal">
                                 /meal
                             </span>
