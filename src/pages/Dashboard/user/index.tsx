@@ -160,20 +160,20 @@ export default function DashboardUser() {
   };
 
   const hasActivePausePeriod = (subscription: Subscription) => {
-    if (!subscription.pause_period_start || !subscription.pause_period_end) return false;
+    if (!subscription.pause_periode_start || !subscription.pause_periode_end) return false;
 
     const today = new Date();
-    const pauseStart = new Date(subscription.pause_period_start);
-    const pauseEnd = new Date(subscription.pause_period_end);
+    const pauseStart = new Date(subscription.pause_periode_start);
+    const pauseEnd = new Date(subscription.pause_periode_end);
 
     return today >= pauseStart && today <= pauseEnd;
   };
 
   const hasUpcomingPausePeriod = (subscription: Subscription) => {
-    if (!subscription.pause_period_start || !subscription.pause_period_end) return false;
+    if (!subscription.pause_periode_start || !subscription.pause_periode_end) return false;
 
     const today = new Date();
-    const pauseStart = new Date(subscription.pause_period_start);
+    const pauseStart = new Date(subscription.pause_periode_start);
 
     return today < pauseStart;
   };
@@ -262,7 +262,7 @@ export default function DashboardUser() {
               </div>
 
               {/* Pause Period Information */}
-              {activeSubscription.pause_period_start && activeSubscription.pause_period_end && (
+              {activeSubscription.pause_periode_start && activeSubscription.pause_periode_end && (
                 <div className="pt-3 border-t">
                   {hasActivePausePeriod(activeSubscription) ? (
                     <div className="bg-yellow-50 p-4 rounded-md">
@@ -271,8 +271,8 @@ export default function DashboardUser() {
                         <span className="font-medium text-yellow-800">Delivery Currently Paused</span>
                       </div>
                       <div className="text-sm text-yellow-700">
-                        <p>No deliveries from {formatDate(activeSubscription.pause_period_start)} to {formatDate(activeSubscription.pause_period_end)}</p>
-                        <p className="mt-1">Deliveries will resume automatically after {formatDate(activeSubscription.pause_period_end)}</p>
+                        <p>No deliveries from {formatDate(activeSubscription.pause_periode_start)} to {formatDate(activeSubscription.pause_periode_end)}</p>
+                        <p className="mt-1">Deliveries will resume automatically after {formatDate(activeSubscription.pause_periode_end)}</p>
                       </div>
                     </div>
                   ) : hasUpcomingPausePeriod(activeSubscription) ? (
@@ -282,7 +282,7 @@ export default function DashboardUser() {
                         <span className="font-medium text-blue-800">Upcoming Delivery Pause</span>
                       </div>
                       <div className="text-sm text-blue-700">
-                        <p>Deliveries will be paused from {formatDate(activeSubscription.pause_period_start)} to {formatDate(activeSubscription.pause_period_end)}</p>
+                        <p>Deliveries will be paused from {formatDate(activeSubscription.pause_periode_start)} to {formatDate(activeSubscription.pause_periode_end)}</p>
                         <p className="mt-1">No meals will be delivered during this period</p>
                       </div>
                     </div>
@@ -293,7 +293,7 @@ export default function DashboardUser() {
                         <span className="font-medium text-gray-800">Previous Delivery Pause</span>
                       </div>
                       <div className="text-sm text-gray-700">
-                        <p>Deliveries were paused from {formatDate(activeSubscription.pause_period_start)} to {formatDate(activeSubscription.pause_period_end)}</p>
+                        <p>Deliveries were paused from {formatDate(activeSubscription.pause_periode_start)} to {formatDate(activeSubscription.pause_periode_end)}</p>
                       </div>
                     </div>
                   )}
@@ -368,9 +368,9 @@ export default function DashboardUser() {
                       <div className="text-sm text-muted-foreground">
                         Meals: {formatMealTypes(subscription.meal_type)}
                       </div>
-                      {subscription.pause_period_start && subscription.pause_period_end && (
+                      {subscription.pause_periode_start && subscription.pause_periode_end && (
                         <div className="text-sm text-orange-600">
-                          Delivery paused: {formatDate(subscription.pause_period_start)} - {formatDate(subscription.pause_period_end)}
+                          Delivery paused: {formatDate(subscription.pause_periode_start)} - {formatDate(subscription.pause_periode_end)}
                         </div>
                       )}
                     </div>

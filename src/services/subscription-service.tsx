@@ -19,8 +19,8 @@ export interface Subscription {
     status: string;
     start_date: string;
     end_date: string;
-    pause_period_start?: string;
-    pause_period_end?: string;
+    pause_periode_start?: string;
+    pause_periode_end?: string;
 }
 
 export const subscriptionService = {
@@ -142,9 +142,8 @@ export const subscriptionService = {
             const { data, error } = await supabase
                 .from('subscriptions')
                 .update({
-                    status: 'PAUSED',
-                    pause_period_start: pauseStart,
-                    pause_period_end: pauseEnd
+                    pause_periode_start: pauseStart,
+                    pause_periode_end: pauseEnd
                 })
                 .eq('id', subscriptionId)
                 .select()
@@ -168,8 +167,8 @@ export const subscriptionService = {
                 .from('subscriptions')
                 .update({
                     status: 'ACTIVE',
-                    pause_period_start: null,
-                    pause_period_end: null
+                    pause_periode_start: null,
+                    pause_periode_end: null
                 })
                 .eq('id', subscriptionId)
                 .select()

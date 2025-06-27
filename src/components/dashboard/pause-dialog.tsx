@@ -210,7 +210,7 @@ export default function PauseDialog({ isOpen, onClose, subscription, onSuccess }
 
                     {/* Delivery Count Preview */}
                     {pauseStart && pauseEnd && skippedDeliveries > 0 && (
-                        <div className="bg-yellow-50 p-3 rounded-md text-sm">
+                        <div className="bg-accent p-3 rounded-md text-sm">
                             <p><strong>Deliveries to be skipped:</strong> {skippedDeliveries} meal{skippedDeliveries > 1 ? 's' : ''}</p>
                             <p className="text-yellow-700 mt-1">These meals will not be delivered during the selected period.</p>
                         </div>

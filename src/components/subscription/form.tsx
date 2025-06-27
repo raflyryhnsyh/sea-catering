@@ -50,9 +50,7 @@ export default function SubscriptionForm() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [message, setMessage] = useState("");
   const [planOptions, setPlanOptions] = useState<PlanOption[]>([]);
-  const [planLoading, setPlanLoading] = useState(true);
   const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
-  const [showActiveSubscriptionModal, setShowActiveSubscriptionModal] = useState(false);
   const [checkingSubscription, setCheckingSubscription] = useState(true);
 
   // Check for existing active subscription
@@ -94,7 +92,6 @@ export default function SubscriptionForm() {
         if (hasActiveSubscription) {
           // User has active subscription
           setHasActiveSubscription(true);
-          setShowActiveSubscriptionModal(true);
         } else {
           // No active subscription found
           setHasActiveSubscription(false);
@@ -114,7 +111,6 @@ export default function SubscriptionForm() {
   useEffect(() => {
     const fetchMealPlans = async () => {
       try {
-        setPlanLoading(true);
         const plans = await mealPlanService.getAllMealPlans();
 
         // Transform meal plans to plan options format
@@ -130,7 +126,7 @@ export default function SubscriptionForm() {
         console.error('Failed to fetch meal plans:', error);
         setMessage("Failed to load meal plans. Please refresh the page.");
       } finally {
-        setPlanLoading(false);
+        setCheckingSubscription(false);
       }
     };
 
@@ -138,7 +134,6 @@ export default function SubscriptionForm() {
   }, []);
 
   const handleActiveSubscriptionClose = () => {
-    setShowActiveSubscriptionModal(false);
     navigate('/dashboard');
   };
 
