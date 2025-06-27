@@ -336,7 +336,7 @@ export default function DashboardUser() {
                 You don't have any active subscription. Subscribe to start enjoying our meal delivery service.
               </p>
               <Button asChild>
-                <a href="/subscription">Subscribe Now</a>
+                <a href="/subscriptions">Subscribe Now</a>
               </Button>
             </CardContent>
           </Card>

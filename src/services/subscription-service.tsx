@@ -94,36 +94,26 @@ export const subscriptionService = {
         }
     },
 
-    async getActiveSubscription(userId?: string) {
-        try {
-            let query = supabase
-                .from('subscriptions')
-                .select('*')
-                .eq('status', 'ACTIVE')
-                .gte('end_date', new Date().toISOString().split('T')[0]);
+    async getActiveSubscription(userId: string) {
+        const { data, error } = await supabase
+            .from('subscriptions')
+            .select('*')
+            .eq('user_id', userId)
+            .eq('status', 'ACTIVE') // Filter by ACTIVE status
+            .gte('end_date', new Date().toISOString().split('T')[0]) // Ensure end date is today or later
 
-            if (userId) {
-                query = query.eq('user_id', userId);
-            } else {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (!user) {
-                    throw new Error('User not authenticated');
-                }
-                query = query.eq('user_id', user.id);
-            }
+        return { data, error };
+    },
 
-            const { data, error } = await query.single();
+    // Alternative method to get all user subscriptions if needed
+    async getAllUserSubscriptions(userId: string) {
+        const { data, error } = await supabase
+            .from('subscriptions')
+            .select('*')
+            .eq('user_id', userId)
+            .gte('end_date', new Date().toISOString().split('T')[0]) // Ensure end date is today or later
 
-            if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
-                console.error('Error fetching active subscription:', error);
-                throw error;
-            }
-
-            return { data: data || null, error: null };
-        } catch (error) {
-            console.error('Get active subscription error:', error);
-            return { data: null, error };
-        }
+        return { data, error };
     },
 
     async cancelSubscription(subscriptionId: number) {
