@@ -21,6 +21,7 @@ interface FormData {
   mealTypes: string[];
   deliveryDays: string[];
   allergies: string;
+  autoRenewal: boolean; // Add auto-renewal option
 }
 
 interface PlanOption {
@@ -43,7 +44,8 @@ export default function SubscriptionForm() {
     planId: selectedMealPlan?.id || 1,
     mealTypes: [],
     deliveryDays: [],
-    allergies: ""
+    allergies: "",
+    autoRenewal: true // Add auto-renewal option
   });
 
   const [loading, setLoading] = useState(false);
@@ -80,22 +82,26 @@ export default function SubscriptionForm() {
           subscriptionCount: subscriptions?.length || 0
         });
 
-        // Check if user has any subscription with status 'ACTIVE'
-        const hasActiveSubscription = subscriptions && subscriptions.length > 0 &&
-          subscriptions.some(sub => sub.status === 'ACTIVE');
+        // Check if user has any truly active subscription
+        const hasActiveSubscription = subscriptions && subscriptions.length > 0;
 
         console.log('Active subscription check:', {
           hasActiveSubscription,
           subscriptionsWithStatus: subscriptions?.map(sub => ({ id: sub.id, status: sub.status }))
         });
 
-        if (hasActiveSubscription) {
-          // User has active subscription
-          setHasActiveSubscription(true);
-        } else {
-          // No active subscription found
-          setHasActiveSubscription(false);
-        }
+        console.log('Active subscription check:', {
+          userId: user.id,
+          hasActiveSubscription,
+          subscriptionCount: subscriptions?.length || 0,
+          subscriptions: subscriptions?.map(sub => ({
+            id: sub.id,
+            status: sub.status,
+            endDate: sub.end_date
+          }))
+        });
+
+        setHasActiveSubscription(hasActiveSubscription);
 
         setCheckingSubscription(false);
       } catch (error) {
@@ -293,7 +299,7 @@ export default function SubscriptionForm() {
         meal_type: formData.mealTypes,
         delivery_days: formData.deliveryDays,
         allergies: formData.allergies.trim()
-      });
+      }, formData.autoRenewal);
 
       if (error) {
         console.error('Subscription creation failed:', error);
@@ -309,7 +315,8 @@ export default function SubscriptionForm() {
           planId: 1,
           mealTypes: [],
           deliveryDays: [],
-          allergies: ""
+          allergies: "",
+          autoRenewal: true // Reset auto-renewal option
         });
         setCurrentStep(1);
       }
@@ -562,6 +569,20 @@ export default function SubscriptionForm() {
                         Your subscription will be active for 30 days starting from today.
                         You can manage your subscription from your dashboard.
                       </p>
+                    </div>
+
+                    {/* Auto-Renewal Option */}
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="autoRenewal"
+                        checked={formData.autoRenewal}
+                        onCheckedChange={(checked) =>
+                          setFormData(prev => ({ ...prev, autoRenewal: !!checked }))
+                        }
+                      />
+                      <Label htmlFor="autoRenewal" className="text-sm">
+                        Enable auto-renewal (subscription will automatically renew every month)
+                      </Label>
                     </div>
                   </div>
                 </div>

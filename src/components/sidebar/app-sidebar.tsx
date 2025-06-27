@@ -3,6 +3,7 @@ import {
   IconChartBar,
   IconDashboard,
   IconFolder,
+  IconHome,
   IconInnerShadowTop,
   IconListDetails,
 } from "@tabler/icons-react"
@@ -54,6 +55,11 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
       ]
     } else {
       return [
+        {
+          title: "Back to Home",
+          url: "/",
+          icon: IconHome,
+        },
         {
           title: "Dashboard",
           url: "/dashboard",

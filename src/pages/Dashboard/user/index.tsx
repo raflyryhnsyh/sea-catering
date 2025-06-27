@@ -2,17 +2,23 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, MapPin, Phone, Utensils, Pause, CalendarX } from "lucide-react";
+import { Calendar, Clock, MapPin, Phone, Utensils, Pause, CalendarX, RotateCcw, DollarSign, X, AlertTriangle } from "lucide-react";
 import { useAuth } from "@/hooks/AuthContext";
 import { subscriptionService, type Subscription } from "@/services/subscription-service";
 import PauseDialog from "@/components/dashboard/pause-dialog";
+import CancelDialog from "@/components/dashboard/cancel-dialog";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardUser() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [activeSubscription, setActiveSubscription] = useState<Subscription | null>(null);
+  const [subscriptionPrices, setSubscriptionPrices] = useState<{ [key: number]: number }>({});
   const [loading, setLoading] = useState(true);
   const [showPauseDialog, setShowPauseDialog] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [cancelMessage, setCancelMessage] = useState("");
 
   useEffect(() => {
     const fetchSubscriptions = async () => {
@@ -25,14 +31,44 @@ export default function DashboardUser() {
           return;
         }
 
-        setSubscriptions(data);
+        const sortedData = data.sort((a, b) => b.id - a.id);
 
-        // Find active subscription (ACTIVE status and not expired)
-        const active = data.find(sub =>
-          sub.status === 'ACTIVE' &&
-          new Date(sub.end_date) > new Date()
-        );
+        setSubscriptions(sortedData);
+
+        // Calculate prices for each subscription
+        const pricePromises = data.map(async (sub) => {
+          const { price } = await subscriptionService.calculateSubscriptionPrice(
+            sub.plan_id,
+            Array.isArray(sub.meal_type) ? sub.meal_type : JSON.parse(sub.meal_type || '[]'),
+            Array.isArray(sub.delivery_days) ? sub.delivery_days : JSON.parse(sub.delivery_days || '[]')
+          );
+          return { id: sub.id, price };
+        });
+
+        const priceResults = await Promise.all(pricePromises);
+        const pricesMap = priceResults.reduce((acc, { id, price }) => {
+          acc[id] = price;
+          return acc;
+        }, {} as { [key: number]: number });
+
+        setSubscriptionPrices(pricesMap);
+
+        // Check for truly active subscription
+        const today = new Date();
+        const active = data.find(sub => {
+          const endDate = new Date(sub.end_date);
+          return sub.status === 'ACTIVE' && endDate >= today;
+        });
+
         setActiveSubscription(active || null);
+
+        // Log subscription status for debugging
+        console.log('Subscription check:', {
+          totalSubs: data.length,
+          activeSub: active ? active.id : null,
+          today: today.toISOString().split('T')[0]
+        });
+
       } catch (error) {
         console.error('Fetch subscriptions error:', error);
       } finally {
@@ -47,17 +83,39 @@ export default function DashboardUser() {
 
   const handleCancelSubscription = async (subscriptionId: number) => {
     try {
+      setCancelMessage("");
       const { error } = await subscriptionService.cancelSubscription(subscriptionId);
 
       if (error) {
         console.error('Error cancelling subscription:', error);
+        setCancelMessage("Failed to cancel subscription. Please try again.");
         return;
       }
 
+      // Show success message
+      setCancelMessage("Subscription cancelled successfully. Auto-renewal has been disabled.");
+
+      // Refresh subscriptions to reflect the change
       await refreshSubscriptions();
+
+      // Clear success message after 3 seconds
+      setTimeout(() => {
+        setCancelMessage("");
+      }, 3000);
+
     } catch (error) {
       console.error('Cancel subscription error:', error);
+      setCancelMessage("An error occurred while cancelling your subscription.");
     }
+  };
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
   };
 
   const refreshSubscriptions = async () => {
@@ -154,9 +212,18 @@ export default function DashboardUser() {
         return 'bg-yellow-100 text-yellow-800';
       case 'CANCELLED':
         return 'bg-red-100 text-red-800';
+      case 'EXPIRED':
+        return 'bg-gray-100 text-gray-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  // Check if subscription is expired (even if status is still ACTIVE)
+  const isSubscriptionExpired = (subscription: Subscription) => {
+    const today = new Date();
+    const endDate = new Date(subscription.end_date);
+    return endDate < today;
   };
 
   const hasActivePausePeriod = (subscription: Subscription) => {
@@ -201,6 +268,16 @@ export default function DashboardUser() {
           </p>
         </div>
 
+        {/* Cancel Message */}
+        {cancelMessage && (
+          <div className={`p-4 rounded-lg ${cancelMessage.includes("successfully")
+            ? "bg-green-50 text-green-800 border border-green-200"
+            : "bg-red-50 text-red-800 border border-red-200"
+            }`}>
+            {cancelMessage}
+          </div>
+        )}
+
         {/* Active Subscription Card */}
         {activeSubscription ? (
           <Card>
@@ -208,6 +285,17 @@ export default function DashboardUser() {
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
                   Active Subscription
+                  {activeSubscription.auto_renewal ? (
+                    <Badge variant="outline" className="flex items-center gap-1">
+                      <RotateCcw className="h-3 w-3" />
+                      Auto-Renewal
+                    </Badge>
+                  ) : (
+                    <Badge variant="secondary" className="flex items-center gap-1">
+                      <X className="h-3 w-3" />
+                      Auto-Renewal Disabled
+                    </Badge>
+                  )}
                 </CardTitle>
                 <Badge className={getStatusColor(activeSubscription.status)}>
                   {activeSubscription.status}
@@ -233,9 +321,19 @@ export default function DashboardUser() {
                     <Clock className="h-4 w-4 text-muted-foreground mt-1" />
                     <div>
                       <span className="font-medium">Meal Types:</span>
-                      <div className="text-sm">{formatMealTypes(activeSubscription.meal_type)}</div>
+                      <div>{formatMealTypes(activeSubscription.meal_type)}</div>
                     </div>
                   </div>
+
+                  {subscriptionPrices[activeSubscription.id] && (
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-medium">Monthly Price:</span>
+                      <span>
+                        {formatPrice(subscriptionPrices[activeSubscription.id])}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-3">
@@ -255,9 +353,21 @@ export default function DashboardUser() {
                     <MapPin className="h-4 w-4 text-muted-foreground mt-1" />
                     <div>
                       <span className="font-medium">Delivery Days:</span>
-                      <div className="text-sm">{formatDeliveryDays(activeSubscription.delivery_days)}</div>
+                      <div>{formatDeliveryDays(activeSubscription.delivery_days)}</div>
                     </div>
                   </div>
+
+                  {activeSubscription.auto_renewal && (
+                    <div className="flex items-start gap-2">
+                      <RotateCcw className="h-4 w-4 text-muted-foreground mt-1" />
+                      <div>
+                        <span className="font-medium">Auto-Renewal:</span>
+                        <div>
+                          Will renew automatically on {formatDate(activeSubscription.end_date)}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -312,6 +422,7 @@ export default function DashboardUser() {
                   variant="outline"
                   onClick={() => setShowPauseDialog(true)}
                   className="flex items-center gap-2"
+                  disabled={activeSubscription.status === 'CANCELLED'}
                 >
                   <Pause className="h-4 w-4" />
                   Pause Delivery
@@ -319,11 +430,27 @@ export default function DashboardUser() {
 
                 <Button
                   variant="destructive"
-                  onClick={() => handleCancelSubscription(activeSubscription.id)}
+                  onClick={() => setShowCancelDialog(true)}
+                  disabled={activeSubscription.status === 'CANCELLED'}
                 >
-                  Cancel Subscription
+                  {activeSubscription.status === 'CANCELLED' ? 'Already Cancelled' : 'Cancel Subscription'}
                 </Button>
               </div>
+
+              {/* Cancellation Notice */}
+              {activeSubscription.status === 'CANCELLED' && (
+                <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <AlertTriangle className="h-4 w-4 text-red-600" />
+                    <span className="font-medium text-red-800">Subscription Cancelled</span>
+                  </div>
+                  <div className="text-sm text-red-700">
+                    <p>Your subscription has been cancelled and auto-renewal is disabled.</p>
+                    <p>You will continue to receive meals until {formatDate(activeSubscription.end_date)}.</p>
+                    <p className="mt-2">You can start a new subscription anytime by visiting our subscription page.</p>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         ) : (
@@ -335,8 +462,8 @@ export default function DashboardUser() {
               <p className="text-muted-foreground mb-4">
                 You don't have any active subscription. Subscribe to start enjoying our meal delivery service.
               </p>
-              <Button asChild>
-                <a href="/subscriptions">Subscribe Now</a>
+              <Button onClick={() => navigate('/subscriptions')}>
+                Subscribe Now
               </Button>
             </CardContent>
           </Card>
@@ -361,6 +488,17 @@ export default function DashboardUser() {
                         <Badge className={getStatusColor(subscription.status)}>
                           {subscription.status}
                         </Badge>
+                        {subscription.auto_renewal && (
+                          <Badge variant="outline" className="flex items-center gap-1">
+                            <RotateCcw className="h-3 w-3" />
+                            Auto-Renewal
+                          </Badge>
+                        )}
+                        {subscriptionPrices[subscription.id] && (
+                          <Badge variant="secondary" className="flex items-center gap-1">
+                            {formatPrice(subscriptionPrices[subscription.id])}
+                          </Badge>
+                        )}
                       </div>
                       <div className="text-sm text-muted-foreground">
                         {formatDate(subscription.start_date)} - {formatDate(subscription.end_date)}
@@ -369,7 +507,7 @@ export default function DashboardUser() {
                         Meals: {formatMealTypes(subscription.meal_type)}
                       </div>
                       {subscription.pause_periode_start && subscription.pause_periode_end && (
-                        <div className="text-sm text-orange-600">
+                        <div className="text-sm text-muted-foreground">
                           Delivery paused: {formatDate(subscription.pause_periode_start)} - {formatDate(subscription.pause_periode_end)}
                         </div>
                       )}
@@ -386,6 +524,16 @@ export default function DashboardUser() {
           </Card>
         )}
       </div>
+
+      {/* Cancel Dialog */}
+      {activeSubscription && (
+        <CancelDialog
+          isOpen={showCancelDialog}
+          onClose={() => setShowCancelDialog(false)}
+          subscription={activeSubscription}
+          onConfirm={() => handleCancelSubscription(activeSubscription.id)}
+        />
+      )}
 
       {/* Pause Dialog */}
       {activeSubscription && (
