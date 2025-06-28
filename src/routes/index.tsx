@@ -25,7 +25,7 @@ function BaseRoute() {
         {/* Auth pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/forgot" element={<ForgotPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Protected Profile */}
         <Route path="/profile" element={
