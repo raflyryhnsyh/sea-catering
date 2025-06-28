@@ -1,5 +1,3 @@
-// pages/ResetPassword.tsx
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
@@ -31,6 +29,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 const emailSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email"),
 });
+
 const passwordSchema = z
   .object({
     password: z

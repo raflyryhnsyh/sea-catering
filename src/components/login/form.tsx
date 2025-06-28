@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "@/hooks/AuthContext"
+import { EyeIcon, EyeOffIcon } from "lucide-react"
 
 export function LoginForm({
   className,
@@ -12,10 +13,10 @@ export function LoginForm({
 }: React.ComponentProps<"form">) {
   const navigate = useNavigate();
   const { signIn, signInWithGoogle, loading } = useAuth();
-
-  const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,14 +85,25 @@ export function LoginForm({
               Forgot your password?
             </Link>
           </div>
-          <Input
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            id="password"
-            type="password"
-            required
-            disabled={loading}
-          />
+          <div className="relative">
+            <Input
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              id="password"
+              type={showPassword ? "text" : "password"}
+              required
+              disabled={loading}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="absolute right-0 top-0 h-full px-3"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
+            </Button>
+          </div>
         </div>
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? "Signing in..." : "Login"}

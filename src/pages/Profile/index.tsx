@@ -3,14 +3,13 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react"
-import { supabase } from "@/lib/db" // Adjust import path as needed
-import { toast } from "sonner" // Or your preferred toast library
+import { supabase } from "@/lib/db"
 import {
     Avatar,
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar";
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, EyeIcon, EyeOffIcon } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 export default function Profile() {
@@ -18,6 +17,8 @@ export default function Profile() {
     const [user, setUser] = useState<any>(null)
     const [loading, setLoading] = useState(true)
     const [passwordLoading, setPasswordLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [message, setMessage] = useState("")
     const [passwords, setPasswords] = useState({
         currentPassword: '',
@@ -41,6 +42,28 @@ export default function Profile() {
         getUser()
     }, [])
 
+    const validatePassword = (password: string) => {
+        const errors = []
+
+        if (password.length < 8) {
+            errors.push("at least 8 characters")
+        }
+        if (!/[A-Z]/.test(password)) {
+            errors.push("uppercase letter")
+        }
+        if (!/[a-z]/.test(password)) {
+            errors.push("lowercase letter")
+        }
+        if (!/[0-9]/.test(password)) {
+            errors.push("number")
+        }
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            errors.push("special character")
+        }
+
+        return errors
+    }
+
     const handlePasswordChange = (field: string, value: string) => {
         setPasswords(prev => ({
             ...prev,
@@ -60,15 +83,16 @@ export default function Profile() {
             return
         }
 
-        // Validasi password match
-        if (passwords.newPassword !== passwords.confirmPassword) {
-            setMessage('New passwords do not match')
+        // Validasi password requirements
+        const passwordErrors = validatePassword(passwords.newPassword)
+        if (passwordErrors.length > 0) {
+            setMessage(`Password must include: ${passwordErrors.join(', ')}`)
             return
         }
 
-        // Validasi panjang password
-        if (passwords.newPassword.length < 6) {
-            setMessage('Password must be at least 6 characters long')
+        // Validasi password match
+        if (passwords.newPassword !== passwords.confirmPassword) {
+            setMessage('New passwords do not match')
             return
         }
 
@@ -178,27 +202,49 @@ export default function Profile() {
                             <form onSubmit={handlePasswordReset} className="space-y-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="new-password">New Password</Label>
-                                    <Input
-                                        type="password"
-                                        id="new-password"
-                                        value={passwords.newPassword}
-                                        onChange={(e) => handlePasswordChange('newPassword', e.target.value)}
-                                        placeholder="Enter new password (min. 6 characters)"
-                                        required
-                                        disabled={passwordLoading}
-                                    />
+                                    <div className="relative">
+                                        <Input
+                                            type="password"
+                                            id="new-password"
+                                            value={passwords.newPassword}
+                                            onChange={(e) => handlePasswordChange('newPassword', e.target.value)}
+                                            placeholder="Enter new password"
+                                            required
+                                            disabled={passwordLoading}
+                                        />
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="icon"
+                                            className="absolute right-0 top-0 h-full px-3"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                            {showPassword ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
+                                        </Button>
+                                    </div>
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="confirm-password">Confirm Password</Label>
-                                    <Input
-                                        type="password"
-                                        id="confirm-password"
-                                        value={passwords.confirmPassword}
-                                        onChange={(e) => handlePasswordChange('confirmPassword', e.target.value)}
-                                        placeholder="Confirm new password"
-                                        required
-                                        disabled={passwordLoading}
-                                    />
+                                    <div className="relative">
+                                        <Input
+                                            type={showConfirmPassword ? "text" : "password"}
+                                            id="confirm-password"
+                                            value={passwords.confirmPassword}
+                                            onChange={(e) => handlePasswordChange('confirmPassword', e.target.value)}
+                                            placeholder="Confirm new password"
+                                            required
+                                            disabled={passwordLoading}
+                                        />
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="icon"
+                                            className="absolute right-0 top-0 h-full px-3"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        >
+                                            {showPassword ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
+                                        </Button>
+                                    </div>
                                 </div>
                                 <Button
                                     type="submit"
@@ -211,6 +257,6 @@ export default function Profile() {
                     </Card>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useAuth } from "@/hooks/AuthContext";
 
 export function RegisterForm({
@@ -20,8 +21,9 @@ export function RegisterForm({
     confirmPassword: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState("");
-
   const [errors, setErrors] = useState({
     password: "",
     confirmPassword: "",
@@ -30,18 +32,34 @@ export function RegisterForm({
   const validatePasswords = () => {
     const newErrors = { password: "", confirmPassword: "" };
 
+    // Minimum 8 characters
     if (formData.password.length < 8) {
-      newErrors.password = "Password harus minimal 8 karakter";
+      newErrors.password = "Password must be at least 8 characters";
+    }
+    // Must include uppercase
+    else if (!/[A-Z]/.test(formData.password)) {
+      newErrors.password = "Password must include uppercase letter";
+    }
+    // Must include lowercase
+    else if (!/[a-z]/.test(formData.password)) {
+      newErrors.password = "Password must include lowercase letter";
+    }
+    // Must include number
+    else if (!/[0-9]/.test(formData.password)) {
+      newErrors.password = "Password must include number";
+    }
+    // Must include special character
+    else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+      newErrors.password = "Password must include special character";
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Password tidak cocok";
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     setErrors(newErrors);
     return !newErrors.password && !newErrors.confirmPassword;
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
@@ -129,28 +147,50 @@ export function RegisterForm({
         </div>
         <div className="grid gap-3">
           <Label htmlFor="password">Create Password</Label>
-          <Input
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            value={formData.password}
-            id="create-password"
-            type="password"
-            required
-            disabled={loading}
-          />
+          <div className="relative">
+            <Input
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              value={formData.password}
+              id="create-password"
+              type={showPassword ? "text" : "password"}
+              required
+              disabled={loading}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="absolute right-0 top-0 h-full px-3"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
+            </Button>
+          </div>
           {errors.password && (
             <p className="text-red-500 text-sm">{errors.password}</p>
           )}
         </div>
         <div className="grid gap-3">
           <Label htmlFor="confirm-password">Confirm Password</Label>
-          <Input
-            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-            value={formData.confirmPassword}
-            id="confirm-password"
-            type="password"
-            required
-            disabled={loading}
-          />
+          <div className="relative">
+            <Input
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+              value={formData.confirmPassword}
+              id="confirm-password"
+              type={showConfirmPassword ? "text" : "password"}
+              required
+              disabled={loading}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="absolute right-0 top-0 h-full px-3"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
+            </Button>
+          </div>
           {errors.confirmPassword && (
             <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
           )}
