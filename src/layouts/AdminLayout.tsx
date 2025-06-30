@@ -9,7 +9,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
 
     <SidebarProvider>
-      <AppSidebar variant="inset" />
+      <AppSidebar variant="inset" userRole="admin" />
       <SidebarInset>
         <SiteHeader />
         <main>
