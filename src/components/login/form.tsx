@@ -30,8 +30,17 @@ export function LoginForm({
     }
 
     if (data) {
+      const userRole = data.userRole || 'user';
+      localStorage.setItem('userRole', userRole);
+
       setMessage("Login successful!");
-      navigate("/dashboard");
+
+      // Redirect berdasarkan role
+      if (userRole === 'admin') {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     }
   }
 

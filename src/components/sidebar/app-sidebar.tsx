@@ -25,12 +25,27 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   userRole: 'admin' | 'user';
 }
 
-export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
+export function AppSidebar({ userRole: propUserRole, ...props }: AppSidebarProps) {
   const { user } = useAuth()
+
+  // Dapatkan role dengan prioritas yang jelas
+  const getCurrentRole = () => {
+    // 1. Prop role (highest priority)
+    if (propUserRole) return propUserRole;
+
+    // 3. localStorage sebagai fallback
+    const storedRole = localStorage.getItem('userRole');
+    if (storedRole) return storedRole;
+
+    // 4. Default fallback
+    return 'user';
+  };
+
+  const effectiveRole = getCurrentRole();
 
   // Navigation items berdasarkan role
   const getNavItems = () => {
-    if (userRole === 'admin') {
+    if (effectiveRole === 'admin') {
       return [
         {
           title: "Dashboard",

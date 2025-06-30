@@ -2,7 +2,7 @@ import Home from "./Home";
 import Profile from "./Profile";
 import DashboardUser from "./Dashboard/user";
 import Contact from "./Contact";
-import DashboardAdmin from "./Dashboard/admin/home";
+import DashboardAdmin from "./Dashboard/admin/dashboard";
 import Login from "./Login";
 import Register from "./Register";
 import Subcriptions from "./Subscriptions";

@@ -85,21 +85,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     const signIn = async (email: string, password: string) => {
+        setLoading(true);
         try {
-            setLoading(true);
             const { data, error } = await supabase.auth.signInWithPassword({
                 email,
-                password,
+                password
             });
 
-            if (error) {
-                console.error('Sign in error:', error);
-                return { data: null, error };
+            if (error) throw error;
+
+            // Ambil role dari tabel users
+            const { data: userData, error: userError } = await supabase
+                .from('users')
+                .select('role')
+                .eq('id', data.user.id)
+                .single();
+
+            if (!userError && userData) {
+                // Return data dengan role
+                return {
+                    data: {
+                        ...data,
+                        userRole: userData.role
+                    },
+                    error: null
+                };
             }
 
             return { data, error: null };
         } catch (error) {
-            console.error('Sign in error:', error);
             return { data: null, error };
         } finally {
             setLoading(false);
