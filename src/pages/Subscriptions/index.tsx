@@ -48,7 +48,7 @@ export default function Subscription() {
           <p className="text-muted-foreground mb-6">Please log in to access subscription plans.</p>
           <button
             onClick={() => navigate('/login')}
-            className="bg-accent px-6 py-2 rounded-lg"
+            className="bg-accent text-accent-foreground px-6 py-2 rounded-lg"
           >
             Go to Login
           </button>

@@ -23,6 +23,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -43,71 +44,110 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Sea Catering Light Theme - Consistent Warm Palette */
+  --background: #FEFCF8; /* Very light cream */
+  --foreground: #7B4019; /* Rich brown for all text */
+  
+  --card: #FFFFFF; /* Pure white cards */
+  --card-foreground: #7B4019; /* Rich brown text on cards */
+  
+  --popover: #FFFFFF; /* Pure white popover */
+  --popover-foreground: #7B4019; /* Rich brown text */
+  
+  /* Primary: Rich brown */
+  --primary: #7B4019; /* Rich dark brown */
+  --primary-foreground: #FFEEA9; /* Light cream text */
+  
+  /* Secondary: Medium orange */
+  --secondary: #FFBF78; /* Medium orange */
+  --secondary-foreground: #7B4019; /* Rich brown text */
+  
+  /* Muted: Light cream tones */
+  --muted: #FFEEA9; /* Light cream */
+  --muted-foreground: #7B4019; /* Rich brown text */
+  
+  /* Accent: Vibrant orange */
+  --accent: #FF7D29; /* Vibrant orange */
+  --accent-foreground: #FFEEA9; /* Light cream text */
+  
+  /* Destructive: Warm red tone */
+  --destructive: #D2691E; /* Warm orange-red */
+  --destructive-foreground: #FFEEA9; /* Light cream text */
+  
+  --border: #FFBF78; /* Medium orange borders */
+  --input: #FFEEA9; /* Light cream input background */
+  --ring: #FF7D29; /* Orange focus ring */
+  
+  /* Chart colors - All from our palette */
+  --chart-1: #7B4019; /* Rich brown */
+  --chart-2: #FF7D29; /* Vibrant orange */
+  --chart-3: #FFBF78; /* Medium orange */
+  --chart-4: #FFEEA9; /* Light cream */
+  --chart-5: #A0541C; /* Darker brown variant */
+  
+  /* Sidebar - Consistent warm theme */
+  --sidebar: #FFEEA9; /* Light cream sidebar */
+  --sidebar-foreground: #7B4019; /* Rich brown text */
+  --sidebar-primary: #7B4019; /* Rich brown */
+  --sidebar-primary-foreground: #FFEEA9; /* Light cream text */
+  --sidebar-accent: #FFBF78; /* Medium orange */
+  --sidebar-accent-foreground: #7B4019; /* Rich brown text */
+  --sidebar-border: #FFBF78; /* Medium orange border */
+  --sidebar-ring: #FF7D29; /* Orange ring */
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Sea Catering Dark Theme - Inverted but Consistent */
+  --background: #1A0F0A; /* Very dark brown */
+  --foreground: #FFEEA9; /* Light cream for all text */
+  
+  --card: #2D1D14; /* Dark brown cards */
+  --card-foreground: #FFEEA9; /* Light cream text on cards */
+  
+  --popover: #2D1D14; /* Dark brown popover */
+  --popover-foreground: #FFEEA9; /* Light cream text */
+  
+  /* Primary: Vibrant orange (inverted) */
+  --primary: #FF7D29; /* Vibrant orange */
+  --primary-foreground: #1A0F0A; /* Very dark brown text */
+  
+  /* Secondary: Dark brown */
+  --secondary: #4A2D19; /* Dark brown */
+  --secondary-foreground: #FFEEA9; /* Light cream text */
+  
+  /* Muted: Medium brown tones */
+  --muted: #3D2415; /* Medium dark brown */
+  --muted-foreground: #FFBF78; /* Medium orange text */
+  
+  /* Accent: Light cream (inverted) */
+  --accent: #FFEEA9; /* Light cream */
+  --accent-foreground: #7B4019; /* Rich brown text */
+  
+  /* Destructive: Bright warm red */
+  --destructive: #FF6B35; /* Bright warm red */
+  --destructive-foreground: #FFEEA9; /* Light cream text */
+  
+  --border: #4A2D19; /* Dark brown borders */
+  --input: #3D2415; /* Medium dark brown input */
+  --ring: #FF7D29; /* Orange focus ring */
+  
+  /* Chart colors for dark theme - High contrast */
+  --chart-1: #FF7D29; /* Vibrant orange */
+  --chart-2: #FFEEA9; /* Light cream */
+  --chart-3: #FFBF78; /* Medium orange */
+  --chart-4: #7B4019; /* Rich brown */
+  --chart-5: #FF9F4D; /* Light orange variant */
+  
+  /* Sidebar for dark theme */
+  --sidebar: #2D1D14; /* Dark brown sidebar */
+  --sidebar-foreground: #FFEEA9; /* Light cream text */
+  --sidebar-primary: #FF7D29; /* Vibrant orange */
+  --sidebar-primary-foreground: #1A0F0A; /* Very dark text */
+  --sidebar-accent: #4A2D19; /* Dark brown accent */
+  --sidebar-accent-foreground: #FFBF78; /* Medium orange text */
+  --sidebar-border: #4A2D19; /* Dark brown border */
+  --sidebar-ring: #FF7D29; /* Orange ring */
 }
 
 @layer base {
@@ -116,5 +156,194 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  
+  /* Ensure all text uses our color system */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-foreground;
+  }
+  
+  p, span, div {
+    @apply text-foreground;
+  }
+  
+  /* Remove any default black colors */
+  * {
+    color: inherit;
+  }
+}
+
+@layer components {
+  /* Testimonial Card Fixes - Most Specific Selectors */
+  .testimonial-card,
+  .testimonial-content,
+  .testimonial,
+  [data-testid="testimonial"],
+  [class*="testimonial"],
+  .card:has(.testimonial),
+  .card:has([data-testid="testimonial"]) {
+    background-color: #FFFFFF !important;
+    color: #7B4019 !important;
+  }
+  
+  /* All child elements in testimonial cards */
+  .testimonial-card *,
+  .testimonial-content *,
+  .testimonial *,
+  [data-testid="testimonial"] *,
+  [class*="testimonial"] *,
+  .card:has(.testimonial) *,
+  .card:has([data-testid="testimonial"]) * {
+    color: #7B4019 !important;
+  }
+  
+  /* Specific testimonial text elements */
+  .testimonial-name,
+  .testimonial-title,
+  .testimonial-text,
+  .testimonial-author,
+  .testimonial-quote,
+  .testimonial p,
+  .testimonial h1,
+  .testimonial h2,
+  .testimonial h3,
+  .testimonial h4,
+  .testimonial h5,
+  .testimonial h6,
+  .testimonial span,
+  .testimonial div {
+    color: #7B4019 !important;
+  }
+  
+  /* Dark mode testimonial fixes - Force visibility */
+  .dark .testimonial-card,
+  .dark .testimonial-content,
+  .dark .testimonial,
+  .dark [data-testid="testimonial"],
+  .dark [class*="testimonial"],
+  .dark .card:has(.testimonial),
+  .dark .card:has([data-testid="testimonial"]) {
+    background-color: #2D1D14 !important;
+    color: #FFEEA9 !important;
+    border: 1px solid #4A2D19 !important;
+  }
+  
+  /* Dark mode - All child elements */
+  .dark .testimonial-card *,
+  .dark .testimonial-content *,
+  .dark .testimonial *,
+  .dark [data-testid="testimonial"] *,
+  .dark [class*="testimonial"] *,
+  .dark .card:has(.testimonial) *,
+  .dark .card:has([data-testid="testimonial"]) * {
+    color: #FFEEA9 !important;
+  }
+  
+  /* Dark mode - Specific text elements */
+  .dark .testimonial-name,
+  .dark .testimonial-title,
+  .dark .testimonial-text,
+  .dark .testimonial-author,
+  .dark .testimonial-quote,
+  .dark .testimonial p,
+  .dark .testimonial h1,
+  .dark .testimonial h2,
+  .dark .testimonial h3,
+  .dark .testimonial h4,
+  .dark .testimonial h5,
+  .dark .testimonial h6,
+  .dark .testimonial span,
+  .dark .testimonial div {
+    color: #FFEEA9 !important;
+  }
+  
+  /* Additional testimonial patterns */
+  .review-card,
+  .customer-review,
+  .feedback-card,
+  .quote-card,
+  .blockquote {
+    background-color: #FFFFFF !important;
+    color: #7B4019 !important;
+  }
+  
+  .dark .review-card,
+  .dark .customer-review,
+  .dark .feedback-card,
+  .dark .quote-card,
+  .dark .blockquote {
+    background-color: #2D1D14 !important;
+    color: #FFEEA9 !important;
+  }
+  
+  /* Fix Footer Colors */
+  footer,
+  .footer,
+  [data-testid="footer"] {
+    background-color: #7B4019 !important;
+    color: #FFEEA9 !important;
+  }
+  
+  footer *,
+  .footer *,
+  [data-testid="footer"] * {
+    color: #FFEEA9 !important;
+  }
+  
+  footer a:hover,
+  .footer a:hover {
+    color: #FF7D29 !important;
+  }
+  
+  /* Dark mode footer */
+  .dark footer,
+  .dark .footer,
+  .dark [data-testid="footer"] {
+    background-color: #FF7D29 !important;
+    color: #1A0F0A !important;
+  }
+  
+  .dark footer *,
+  .dark .footer *,
+  .dark [data-testid="footer"] * {
+    color: #1A0F0A !important;
+  }
+  
+  /* Override any problematic utility classes */
+  .text-black,
+  .text-gray-900,
+  .text-slate-900,
+  .text-zinc-900,
+  .text-neutral-900 {
+    color: #7B4019 !important;
+  }
+  
+  .dark .text-black,
+  .dark .text-gray-900,
+  .dark .text-slate-900,
+  .dark .text-zinc-900,
+  .dark .text-neutral-900 {
+    color: #FFEEA9 !important;
+  }
+  
+  /* Force visibility for any hidden elements */
+  .dark * {
+    opacity: 1 !important;
+  }
+  
+  /* Ensure star ratings are visible */
+  .star,
+  .rating,
+  [class*="star"],
+  [class*="rating"] {
+    color: #FF7D29 !important;
+  }
+  
+  .dark .star,
+  .dark .rating,
+  .dark [class*="star"],
+  .dark [class*="rating"] {
+    color: #FF7D29 !important;
   }
 }

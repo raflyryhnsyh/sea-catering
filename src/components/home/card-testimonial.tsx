@@ -47,7 +47,7 @@ const TestimonialCard = ({ id, name, rating, comment, avatar }: Testimonial) => 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Avatar>
-            <AvatarFallback className="text-xl font-medium bg-primary text-primary-foreground">
+            <AvatarFallback className="text-xl font-medium text-primary-foreground">
               {avatar ? (
                 <img src={avatar} alt={name} className="w-full h-full object-cover rounded-full" />
               ) : (
@@ -56,7 +56,7 @@ const TestimonialCard = ({ id, name, rating, comment, avatar }: Testimonial) => 
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-lg font-semibold">{name}</p>
+            <p className="text-lg text-accent-foreground font-semibold">{name}</p>
             <StarRating rating={rating} />
           </div>
         </div>
@@ -65,7 +65,7 @@ const TestimonialCard = ({ id, name, rating, comment, avatar }: Testimonial) => 
           </Link>
         </Button>
       </div>
-      <p className="mt-5 text-[17px] flex-1 overflow-hidden">{displayComment}</p>
+      <p className="mt-5 text-[17px] flex-1 text-accent-foreground overflow-hidden">{displayComment}</p>
     </div>
   );
 };
