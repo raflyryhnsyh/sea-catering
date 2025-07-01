@@ -40,6 +40,10 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Success state colors */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
 }
 
 :root {
@@ -70,6 +74,10 @@
   /* Accent: Vibrant orange */
   --accent: #FF7D29; /* Vibrant orange */
   --accent-foreground: #FFEEA9; /* Light cream text */
+  
+  /* Success: Green with warm tone */
+  --success: #52A071; /* Warm green */
+  --success-foreground: #FFEEA9; /* Light cream text */
   
   /* Destructive: Warm red tone */
   --destructive: #D2691E; /* Warm orange-red */
@@ -124,6 +132,10 @@
   --accent: #FFEEA9; /* Light cream */
   --accent-foreground: #7B4019; /* Rich brown text */
   
+  /* Success: Brighter green for dark mode */
+  --success: #6BC299; /* Brighter warm green */
+  --success-foreground: #1A0F0A; /* Dark text on success */
+  
   /* Destructive: Bright warm red */
   --destructive: #FF6B35; /* Bright warm red */
   --destructive-foreground: #FFEEA9; /* Light cream text */
@@ -175,6 +187,97 @@
 }
 
 @layer components {
+  /* Success Popup Styling - Consistent with Sea Catering Theme */
+  .success-popup-overlay {
+    background-color: rgba(26, 15, 10, 0.5) !important; /* Dark brown overlay */
+  }
+  
+  .success-popup-container {
+    background-color: #FFFFFF !important; /* White background for light mode */
+    color: #7B4019 !important; /* Rich brown text */
+    border: 2px solid #FFBF78 !important; /* Medium orange border */
+  }
+  
+  .success-popup-icon-container {
+    background-color: #FFEEA9 !important; /* Light cream background */
+  }
+  
+  .success-popup-icon {
+    color: #52A071 !important; /* Warm green icon */
+  }
+  
+  .success-popup-title {
+    color: #7B4019 !important; /* Rich brown title */
+  }
+  
+  .success-popup-text {
+    color: #7B4019 !important; /* Rich brown text */
+  }
+  
+  /* Dark mode success popup */
+  .dark .success-popup-overlay {
+    background-color: rgba(0, 0, 0, 0.7) !important; /* Darker overlay for dark mode */
+  }
+  
+  .dark .success-popup-container {
+    background-color: #2D1D14 !important; /* Dark brown background */
+    color: #FFEEA9 !important; /* Light cream text */
+    border: 2px solid #4A2D19 !important; /* Dark brown border */
+  }
+  
+  .dark .success-popup-icon-container {
+    background-color: #3D2415 !important; /* Medium dark brown background */
+  }
+  
+  .dark .success-popup-icon {
+    color: #6BC299 !important; /* Brighter green icon for dark mode */
+  }
+  
+  .dark .success-popup-title {
+    color: #FFEEA9 !important; /* Light cream title */
+  }
+  
+  .dark .success-popup-text {
+    color: #FFBF78 !important; /* Medium orange text */
+  }
+  
+  /* Override hard-coded classes in popup */
+  .bg-black\/50 {
+    background-color: rgba(26, 15, 10, 0.5) !important;
+  }
+  
+  .dark .bg-black\/50 {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+  }
+  
+  .bg-white {
+    background-color: #FFFFFF !important;
+    color: #7B4019 !important;
+    border: 2px solid #FFBF78 !important;
+  }
+  
+  .dark .bg-white {
+    background-color: #2D1D14 !important;
+    color: #FFEEA9 !important;
+    border: 2px solid #4A2D19 !important;
+  }
+  
+  .bg-green-100 {
+    background-color: #FFEEA9 !important;
+  }
+  
+  .dark .bg-green-100 {
+    background-color: #3D2415 !important;
+  }
+  
+  .text-green-600 {
+    color: #52A071 !important;
+  }
+  
+  .dark .text-green-600 {
+    color: #6BC299 !important;
+  }
+  
   /* Testimonial Card Fixes - Most Specific Selectors */
   .testimonial-card,
   .testimonial-content,
@@ -195,24 +298,6 @@
   [class*="testimonial"] *,
   .card:has(.testimonial) *,
   .card:has([data-testid="testimonial"]) * {
-    color: #7B4019 !important;
-  }
-  
-  /* Specific testimonial text elements */
-  .testimonial-name,
-  .testimonial-title,
-  .testimonial-text,
-  .testimonial-author,
-  .testimonial-quote,
-  .testimonial p,
-  .testimonial h1,
-  .testimonial h2,
-  .testimonial h3,
-  .testimonial h4,
-  .testimonial h5,
-  .testimonial h6,
-  .testimonial span,
-  .testimonial div {
     color: #7B4019 !important;
   }
   
@@ -237,43 +322,6 @@
   .dark [class*="testimonial"] *,
   .dark .card:has(.testimonial) *,
   .dark .card:has([data-testid="testimonial"]) * {
-    color: #FFEEA9 !important;
-  }
-  
-  /* Dark mode - Specific text elements */
-  .dark .testimonial-name,
-  .dark .testimonial-title,
-  .dark .testimonial-text,
-  .dark .testimonial-author,
-  .dark .testimonial-quote,
-  .dark .testimonial p,
-  .dark .testimonial h1,
-  .dark .testimonial h2,
-  .dark .testimonial h3,
-  .dark .testimonial h4,
-  .dark .testimonial h5,
-  .dark .testimonial h6,
-  .dark .testimonial span,
-  .dark .testimonial div {
-    color: #FFEEA9 !important;
-  }
-  
-  /* Additional testimonial patterns */
-  .review-card,
-  .customer-review,
-  .feedback-card,
-  .quote-card,
-  .blockquote {
-    background-color: #FFFFFF !important;
-    color: #7B4019 !important;
-  }
-  
-  .dark .review-card,
-  .dark .customer-review,
-  .dark .feedback-card,
-  .dark .quote-card,
-  .dark .blockquote {
-    background-color: #2D1D14 !important;
     color: #FFEEA9 !important;
   }
   
@@ -327,11 +375,6 @@
     color: #FFEEA9 !important;
   }
   
-  /* Force visibility for any hidden elements */
-  .dark * {
-    opacity: 1 !important;
-  }
-  
   /* Ensure star ratings are visible */
   .star,
   .rating,
@@ -346,4 +389,5 @@
   .dark [class*="rating"] {
     color: #FF7D29 !important;
   }
+  
 }

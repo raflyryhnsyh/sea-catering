@@ -4,6 +4,8 @@ import { Separator } from "@/components/ui/separator";
 
 import { HashLink } from "react-router-hash-link";
 import { Logo } from "../navbar/logo";
+import { CheckCircle } from "lucide-react";
+import { useState } from "react";
 
 const footerLinks = [
   {
@@ -21,6 +23,28 @@ const footerLinks = [
 ];
 
 const Footer = () => {
+
+
+  const [submitting, setSubmitting] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    // Simulate form submission
+    setTimeout(() => {
+      setSubmitting(false);
+      setShowSuccessPopup(true);
+      // reset form
+      (e.target as HTMLFormElement).reset();
+    }, 1000);
+  };
+
+  const closeSuccessPopup = () => {
+    setShowSuccessPopup(false);
+  };
+
   return (
     <footer className="dark:border-t mt-40 dark bg-background text-foreground">
       <div className="max-w-screen-xl mx-auto">
@@ -46,9 +70,21 @@ const Footer = () => {
           {/* Subscribe Newsletter */}
           <div className="max-w-xs w-full">
             <h6 className="font-semibold">Stay up to date</h6>
-            <form className="mt-6 flex items-center gap-2">
-              <Input type="email" placeholder="Enter your email" />
-              <Button>Subscribe</Button>
+            <form className="mt-6 flex items-center gap-2" onSubmit={handleSubmit}>
+              <Input type="email" placeholder="Enter your email" required />
+              <Button
+                disabled={submitting}
+                className="bg-amber-800"
+              >
+                {submitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 text-accent-foreground"></div>
+                    Sending...
+                  </>
+                ) : (
+                  "Subscribe"
+                )}
+              </Button>
             </form>
           </div>
         </div>
@@ -63,6 +99,24 @@ const Footer = () => {
             . All rights reserved.
           </span>
         </div>
+
+        {/* Success Popup */}
+        {showSuccessPopup && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-card text-card-foreground rounded-lg p-8 max-w-md w-full mx-4 text-center animate-in fade-in duration-300 border-2 border-border">
+              <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-8 h-8" style={{ color: 'hsl(var(--success))' }} />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Subscription Successful!</h3>
+              <p className="text-muted-foreground mb-6">
+                Thank you for subscribing to our newsletter!
+              </p>
+              <Button onClick={closeSuccessPopup} className="w-full">
+                Close
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </footer>
   );
