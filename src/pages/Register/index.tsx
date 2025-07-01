@@ -13,7 +13,7 @@ export default function Register() {
       </div>
       <div className="bg-muted relative hidden lg:block">
         <img
-          src="../../public/home.jpg"
+          src="/home.jpg"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
