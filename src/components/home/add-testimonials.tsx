@@ -25,7 +25,6 @@ const AddTestimonial = ({ onTestimonialAdded }: AddTestimonialProps) => {
         rating: 5
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitSuccess, setSubmitSuccess] = useState(false); // Add this missing state
     const [open, setOpen] = useState(false);
 
     const MAX_COMMENT_LENGTH = 100;
@@ -75,16 +74,12 @@ const AddTestimonial = ({ onTestimonialAdded }: AddTestimonialProps) => {
                 throw testimonialError;
             }
 
-            // Show success state
-            setSubmitSuccess(true);
-
             // Reset form after delay
             setTimeout(() => {
                 setFormData({
                     comment: '',
                     rating: 5
                 });
-                setSubmitSuccess(false);
                 setOpen(false);
 
                 if (onTestimonialAdded) {

@@ -33,10 +33,8 @@ export default function Dashboard() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [fetchingTestimonials, setFetchingTestimonials] = useState(false);
 
   const fetchTestimonials = async () => {
-    setFetchingTestimonials(true);
     try {
       const { data, error } = await supabase
         .from('testimonial')
@@ -85,8 +83,6 @@ export default function Dashboard() {
     } catch (error) {
       console.error("Error fetching testimonials:", error);
       setTestimonials([]);
-    } finally {
-      setFetchingTestimonials(false);
     }
   };
 
