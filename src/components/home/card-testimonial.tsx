@@ -9,15 +9,14 @@ const StarRating = ({ rating }: { rating: number }) => (
     {[1, 2, 3, 4, 5].map((star) => {
       const isFilled = star <= rating;
       const isHalfFilled = star > rating && star - 0.5 <= rating;
-      
+
       return (
         <div key={star} className="relative">
           <Star
-            className={`w-4 h-4 ${
-              isFilled
-                ? "fill-yellow-400 text-yellow-400"
-                : "fill-gray-200 text-gray-200"
-            }`}
+            className={`w-4 h-4 ${isFilled
+              ? "fill-yellow-400 text-yellow-400"
+              : "fill-gray-200 text-gray-200"
+              }`}
           />
           {isHalfFilled && (
             <Star
@@ -34,10 +33,16 @@ const StarRating = ({ rating }: { rating: number }) => (
   </div>
 );
 
-const TestimonialCard = ({ id, name, rating, comment, avatar }: Testimonial) => (
-  <div
+const TestimonialCard = ({ id, name, rating, comment, avatar }: Testimonial) => {
+  // Truncate comment if it exceeds 100 characters
+  const displayComment = comment.length > 100
+    ? comment.substring(0, 100) + '...'
+    : comment;
+
+  return (
+    <div
       key={id}
-      className="min-w-96 max-w-sm bg-accent rounded-xl p-6 mx-4 my-10 "
+      className="min-w-96 max-w-sm bg-accent rounded-xl p-6 mx-4 my-10 h-[200px] flex flex-col justify-between" // Added fixed height and flex layout
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -45,9 +50,9 @@ const TestimonialCard = ({ id, name, rating, comment, avatar }: Testimonial) => 
             <AvatarFallback className="text-xl font-medium bg-primary text-primary-foreground">
               {avatar ? (
                 <img src={avatar} alt={name} className="w-full h-full object-cover rounded-full" />
-                ) : (
+              ) : (
                 <span className="text-xl font-medium">{name.charAt(0)}</span>
-                )}
+              )}
             </AvatarFallback>
           </Avatar>
           <div>
@@ -60,8 +65,9 @@ const TestimonialCard = ({ id, name, rating, comment, avatar }: Testimonial) => 
           </Link>
         </Button>
       </div>
-      <p className="mt-5 text-[17px]">{comment}</p>
+      <p className="mt-5 text-[17px] flex-1 overflow-hidden">{displayComment}</p>
     </div>
-);
+  );
+};
 
 export default TestimonialCard;

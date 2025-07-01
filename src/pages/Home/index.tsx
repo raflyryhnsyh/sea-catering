@@ -1,8 +1,13 @@
+import AddTestimonial from '@/components/home/add-testimonials';
 import KeyFeatures from '@/components/home/key-features';
 import Overview from '@/components/home/overview';
 import Testimonials from '@/components/home/testimonials';
+import { Button } from '@/components/ui/button';
 import { Edit, MonitorCheck, Truck } from "lucide-react";
 import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/db';
+import type { Testimonial } from '@/types/features';
+import { useAuth } from '@/hooks/AuthContext';
 
 const allFeatures = [
   {
@@ -25,68 +30,85 @@ const allFeatures = [
   },
 ];
 
-const testimonials = [
-  {
-    id: 1,
-    name: "John Doe",
-    rating: 4.8,
-    comment:
-      "This product has completely transformed the way we work. The efficiency and ease of use are unmatched!",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-  },
-  {
-    id: 2,
-    name: "Sophia Lee",
-    rating: 5.0,
-    comment:
-      "This tool has saved me hours of work! The analytics and reporting features are incredibly powerful.",
-    avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-  },
-  {
-    id: 3,
-    name: "Michael Johnson",
-    rating: 5.0,
-    comment:
-      "An amazing tool that simplifies complex tasks. Highly recommended for professionals in the industry.",
-    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-  },
-  {
-    id: 4,
-    name: "Emily Davis",
-    rating: 3.3,
-    comment:
-      "I've seen a significant improvement in our team's productivity since we started using this service.",
-    avatar: "https://randomuser.me/api/portraits/women/4.jpg",
-  },
-  {
-    id: 5,
-    name: "Daniel Martinez",
-    rating: 2.6,
-    comment:
-      "The best investment we've made! The support team is also super responsive and helpful.",
-    avatar: "https://randomuser.me/api/portraits/men/5.jpg",
-  },
-  {
-    id: 6,
-    name: "Jane Smith",
-    rating: 4.5,
-    comment:
-      "The user experience is top-notch! The interface is clean, intuitive, and easy to navigate.",
-    avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-  },
-];
-
 export default function Dashboard() {
-
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [fetchingTestimonials, setFetchingTestimonials] = useState(false);
+
+  const fetchTestimonials = async () => {
+    setFetchingTestimonials(true);
+    try {
+      const { data, error } = await supabase
+        .from('testimonial')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      // Transform data - ambil user_name dan user_avatar dari database
+      const transformedData: Testimonial[] = (data || []).map((item: any) => {
+        const isCurrentUser = user && item.user_id === user.id;
+
+        let name = 'Anonymous User';
+        let avatar = null;
+
+        if (item.user_name) {
+          // Jika ada user_name di database, gunakan itu
+          name = item.user_name;
+        } else if (isCurrentUser && user) {
+          // Fallback untuk current user
+          name = user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
+            user.email?.split('@')[0] ||
+            'You';
+        } else {
+          // Fallback untuk user lain
+          name = `User ${item.user_id?.slice(-4) || 'Unknown'}`;
+        }
+
+        // Ambil avatar dari database atau user metadata
+        avatar = item.user_avatar ||
+          (isCurrentUser && user ? (user.user_metadata?.avatar_url || user.user_metadata?.picture) : null);
+
+        return {
+          id: item.id,
+          name,
+          rating: item.rating,
+          comment: item.comment,
+          avatar,
+          user_id: item.user_id,
+          created_at: item.created_at
+        };
+      });
+
+      setTestimonials(transformedData);
+    } catch (error) {
+      console.error("Error fetching testimonials:", error);
+      setTestimonials([]);
+    } finally {
+      setFetchingTestimonials(false);
+    }
+  };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800);
+    const initializePage = async () => {
+      await fetchTestimonials();
 
-    return () => clearTimeout(timer);
-  }, []);
+      // Add minimum loading time for UX
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 800);
+
+      return () => clearTimeout(timer);
+    };
+
+    initializePage();
+  }, [user]);
+
+  const handleTestimonialAdded = async () => {
+    await fetchTestimonials();
+  };
 
   if (loading) {
     return (
@@ -101,7 +123,12 @@ export default function Dashboard() {
     <div className="pt-20">
       <Overview />
       <KeyFeatures features={allFeatures} />
-      <Testimonials testimonials={testimonials} />
+      <Testimonials
+        testimonials={testimonials}
+      />
+      <div className="flex justify-center py-8">
+        <AddTestimonial onTestimonialAdded={handleTestimonialAdded} />
+      </div>
     </div>
   );
 }
