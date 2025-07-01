@@ -2,7 +2,6 @@ import AddTestimonial from '@/components/home/add-testimonials';
 import KeyFeatures from '@/components/home/key-features';
 import Overview from '@/components/home/overview';
 import Testimonials from '@/components/home/testimonials';
-import { Button } from '@/components/ui/button';
 import { Edit, MonitorCheck, Truck } from "lucide-react";
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/db';

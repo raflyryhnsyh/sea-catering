@@ -1,22 +1,58 @@
 import SubscriptionForm from "@/components/subscription/form";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Subscription() {
 
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
+
+    const checkAuthentication = () => {
+      // Simulasi pengecekan autentikasi
+      const token = localStorage.getItem('token'); // Ganti dengan logika autentikasi yang sesuai
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+      setIsAuthenticated(true);
+    }
+
+    checkAuthentication
+
     const timer = setTimeout(() => {
       setLoading(false);
     }, 800);
 
     return () => clearTimeout(timer);
   }, []);
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center pt-20">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         <p className="mt-4 text-muted-foreground">Loading subscription plan...</p>
+      </div>
+    );
+  }
+
+  // Jika belum authenticated, tampilkan pesan atau redirect
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center pt-20">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Login Required</h2>
+          <p className="text-muted-foreground mb-6">Please log in to access subscription plans.</p>
+          <button
+            onClick={() => navigate('/login')}
+            className="bg-accent px-6 py-2 rounded-lg"
+          >
+            Go to Login
+          </button>
+        </div>
       </div>
     );
   }
