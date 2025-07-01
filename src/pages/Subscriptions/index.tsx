@@ -15,12 +15,6 @@ export default function Subscription() {
       return;
     }
 
-    // If not authenticated, redirect to login
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-
     // User is authenticated, stop loading
     setLoading(false);
   }, [user, authLoading, navigate]);
@@ -59,11 +53,11 @@ export default function Subscription() {
         <div className="flex flex-col items-center justify-center gap-6">
           <h1 className="text-5xl font-bold text-center tracking-tight">Build Your Subscription Plan</h1>
           <p className="text-muted-foreground text-lg mb-12">
-            Create a personalized meal plan that fits your lifestyle and taste preferences..
+            Create a personalized meal plan that fits your lifestyle and taste preferences.
           </p>
         </div>
 
-        <div className="w-full max-w-4xl">
+        <div className="w-full max-w-6xl">
           <div className="bg-accent rounded-xl shadow-lg border p-8">
             <SubscriptionForm />
           </div>

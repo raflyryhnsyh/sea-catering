@@ -77,7 +77,7 @@ export function RegisterForm({
       }
 
       if (data) {
-        setMessage("Registration successful! Please check your email to verify your account.");
+        setMessage("Registration successful!");
         // Reset form
         setFormData({
           fullname: "",
@@ -151,6 +151,7 @@ export function RegisterForm({
             <Input
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               value={formData.password}
+              placeholder="•••••••••"
               id="create-password"
               type={showPassword ? "text" : "password"}
               required
@@ -177,6 +178,7 @@ export function RegisterForm({
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               value={formData.confirmPassword}
               id="confirm-password"
+              placeholder="•••••••••"
               type={showConfirmPassword ? "text" : "password"}
               required
               disabled={loading}

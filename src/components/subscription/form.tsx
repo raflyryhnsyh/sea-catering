@@ -357,12 +357,12 @@ export default function SubscriptionForm() {
 
         <div className="flex items-center justify-center mb-4">
           <div className="text-center">
-            <h2 className="text-lg font-semibold">
+            <h2 className="text-lg font-semibold text-accent-foreground">
               {currentStep === 1 && "Personal Information"}
               {currentStep === 2 && "Subscription Preferences"}
               {currentStep === 3 && "Order Summary & Checkout"}
             </h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-accent-foreground">
               Step {currentStep} of 3
             </p>
           </div>
@@ -475,10 +475,10 @@ export default function SubscriptionForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="allergies">Allergies or Special Requests (Optional)</Label>
+                    <Label htmlFor="allergies">Allergies (Optional)</Label>
                     <Textarea
                       id="allergies"
-                      placeholder="Write about your allergies or special dietary requirements"
+                      placeholder="Write about your allergies"
                       value={formData.allergies}
                       onChange={(e) => setFormData(prev => ({ ...prev, allergies: e.target.value }))}
                     />
@@ -540,7 +540,7 @@ export default function SubscriptionForm() {
                         <p><strong>Meal Types:</strong> {formData.mealTypes.map(type => mealTypeOptions.find(m => m.id === type)?.label).join(', ')}</p>
                         <p><strong>Delivery Days:</strong> {formData.deliveryDays.map(day => dayOptions.find(d => d.id === day)?.label).join(', ')}</p>
                         {formData.allergies && (
-                          <p><strong>Allergies or Special Requests:</strong> {formData.allergies}</p>
+                          <p><strong>Allergies:</strong> {formData.allergies}</p>
                         )}
                       </div>
                     </div>

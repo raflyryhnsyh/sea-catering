@@ -49,7 +49,7 @@
 :root {
   --radius: 0.625rem;
   
-  /* Sea Catering Light Theme - Consistent Warm Palette */
+  /* Sea Catering Light Theme - Clean Warm Palette */
   --background: #FEFCF8; /* Very light cream */
   --foreground: #7B4019; /* Rich brown for all text */
   
@@ -61,44 +61,44 @@
   
   /* Primary: Rich brown */
   --primary: #7B4019; /* Rich dark brown */
-  --primary-foreground: #FFEEA9; /* Light cream text */
+  --primary-foreground: #FDF5E6; /* Old Lace - creamy white */
   
   /* Secondary: Medium orange */
   --secondary: #FFBF78; /* Medium orange */
   --secondary-foreground: #7B4019; /* Rich brown text */
   
-  /* Muted: Light cream tones */
-  --muted: #FFEEA9; /* Light cream */
+  /* Muted: Old Lace tones */
+  --muted: #FDF5E6; /* Old Lace - creamy white */
   --muted-foreground: #7B4019; /* Rich brown text */
   
   /* Accent: Vibrant orange */
   --accent: #FF7D29; /* Vibrant orange */
-  --accent-foreground: #FFEEA9; /* Light cream text */
+  --accent-foreground: #FDF5E6; /* Old Lace text */
   
   /* Success: Green with warm tone */
   --success: #52A071; /* Warm green */
-  --success-foreground: #FFEEA9; /* Light cream text */
+  --success-foreground: #FDF5E6; /* Old Lace text */
   
   /* Destructive: Warm red tone */
   --destructive: #D2691E; /* Warm orange-red */
-  --destructive-foreground: #FFEEA9; /* Light cream text */
+  --destructive-foreground: #FDF5E6; /* Old Lace text */
   
   --border: #FFBF78; /* Medium orange borders */
-  --input: #FFEEA9; /* Light cream input background */
+  --input: #FDF5E6; /* Old Lace input background */
   --ring: #FF7D29; /* Orange focus ring */
   
   /* Chart colors - All from our palette */
   --chart-1: #7B4019; /* Rich brown */
   --chart-2: #FF7D29; /* Vibrant orange */
   --chart-3: #FFBF78; /* Medium orange */
-  --chart-4: #FFEEA9; /* Light cream */
+  --chart-4: #FDF5E6; /* Old Lace */
   --chart-5: #A0541C; /* Darker brown variant */
   
   /* Sidebar - Consistent warm theme */
-  --sidebar: #FFEEA9; /* Light cream sidebar */
+  --sidebar: #FDF5E6; /* Old Lace sidebar */
   --sidebar-foreground: #7B4019; /* Rich brown text */
   --sidebar-primary: #7B4019; /* Rich brown */
-  --sidebar-primary-foreground: #FFEEA9; /* Light cream text */
+  --sidebar-primary-foreground: #FDF5E6; /* Old Lace text */
   --sidebar-accent: #FFBF78; /* Medium orange */
   --sidebar-accent-foreground: #7B4019; /* Rich brown text */
   --sidebar-border: #FFBF78; /* Medium orange border */
@@ -106,15 +106,15 @@
 }
 
 .dark {
-  /* Sea Catering Dark Theme - Inverted but Consistent */
+  /* Sea Catering Dark Theme - Deep Natural Colors */
   --background: #1A0F0A; /* Very dark brown */
-  --foreground: #FFEEA9; /* Light cream for all text */
+  --foreground: #FDF5E6; /* Old Lace for all text */
   
   --card: #2D1D14; /* Dark brown cards */
-  --card-foreground: #FFEEA9; /* Light cream text on cards */
+  --card-foreground: #FDF5E6; /* Old Lace text on cards */
   
   --popover: #2D1D14; /* Dark brown popover */
-  --popover-foreground: #FFEEA9; /* Light cream text */
+  --popover-foreground: #FDF5E6; /* Old Lace text */
   
   /* Primary: Vibrant orange (inverted) */
   --primary: #FF7D29; /* Vibrant orange */
@@ -122,14 +122,14 @@
   
   /* Secondary: Dark brown */
   --secondary: #4A2D19; /* Dark brown */
-  --secondary-foreground: #FFEEA9; /* Light cream text */
+  --secondary-foreground: #FDF5E6; /* Old Lace text */
   
   /* Muted: Medium brown tones */
   --muted: #3D2415; /* Medium dark brown */
   --muted-foreground: #FFBF78; /* Medium orange text */
   
-  /* Accent: Light cream (inverted) */
-  --accent: #FFEEA9; /* Light cream */
+  /* Accent: Old Lace (inverted) */
+  --accent: #FDF5E6; /* Old Lace */
   --accent-foreground: #7B4019; /* Rich brown text */
   
   /* Success: Brighter green for dark mode */
@@ -138,7 +138,7 @@
   
   /* Destructive: Bright warm red */
   --destructive: #FF6B35; /* Bright warm red */
-  --destructive-foreground: #FFEEA9; /* Light cream text */
+  --destructive-foreground: #FDF5E6; /* Old Lace text */
   
   --border: #4A2D19; /* Dark brown borders */
   --input: #3D2415; /* Medium dark brown input */
@@ -146,14 +146,14 @@
   
   /* Chart colors for dark theme - High contrast */
   --chart-1: #FF7D29; /* Vibrant orange */
-  --chart-2: #FFEEA9; /* Light cream */
+  --chart-2: #FDF5E6; /* Old Lace */
   --chart-3: #FFBF78; /* Medium orange */
   --chart-4: #7B4019; /* Rich brown */
   --chart-5: #FF9F4D; /* Light orange variant */
   
   /* Sidebar for dark theme */
   --sidebar: #2D1D14; /* Dark brown sidebar */
-  --sidebar-foreground: #FFEEA9; /* Light cream text */
+  --sidebar-foreground: #FDF5E6; /* Old Lace text */
   --sidebar-primary: #FF7D29; /* Vibrant orange */
   --sidebar-primary-foreground: #1A0F0A; /* Very dark text */
   --sidebar-accent: #4A2D19; /* Dark brown accent */
@@ -199,7 +199,7 @@
   }
   
   [data-radix-collection-item][data-state="checked"]::before {
-    background-color: #FFEEA9 !important; /* Light cream dot */
+    background-color: #FDF5E6 !important; /* Old Lace dot */
   }
   
   /* Dark mode radio buttons */
@@ -209,8 +209,8 @@
   }
   
   .dark [data-radix-collection-item][data-state="checked"] {
-    background-color: #FFEEA9 !important; /* Light cream when selected */
-    border-color: #FFEEA9 !important;
+    background-color: #FDF5E6 !important; /* Old Lace when selected */
+    border-color: #FDF5E6 !important;
   }
   
   .dark [data-radix-collection-item][data-state="checked"]::before {
@@ -230,13 +230,13 @@
   
   /* Dark mode checkboxes */
   .dark [type="checkbox"] {
-    accent-color: #FFEEA9 !important; /* Light cream */
+    accent-color: #FDF5E6 !important; /* Old Lace */
     border-color: #4A2D19 !important; /* Dark brown border */
   }
   
   .dark [type="checkbox"]:checked {
-    background-color: #FFEEA9 !important;
-    border-color: #FFEEA9 !important;
+    background-color: #FDF5E6 !important;
+    border-color: #FDF5E6 !important;
   }
   
   /* Shadcn Radio Group Item Styling */
@@ -248,17 +248,17 @@
   .radio-group-item[data-state="checked"] {
     background-color: #FF7D29 !important;
     border-color: #FF7D29 !important;
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
   }
   
   .dark .radio-group-item {
     border-color: #4A2D19 !important;
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
   }
   
   .dark .radio-group-item[data-state="checked"] {
-    background-color: #FFEEA9 !important;
-    border-color: #FFEEA9 !important;
+    background-color: #FDF5E6 !important;
+    border-color: #FDF5E6 !important;
     color: #7B4019 !important;
   }
   
@@ -273,7 +273,7 @@
   }
   
   .checkbox-root[data-state="checked"] svg {
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
   }
   
   .dark .checkbox-root {
@@ -282,8 +282,8 @@
   }
   
   .dark .checkbox-root[data-state="checked"] {
-    background-color: #FFEEA9 !important;
-    border-color: #FFEEA9 !important;
+    background-color: #FDF5E6 !important;
+    border-color: #FDF5E6 !important;
   }
   
   .dark .checkbox-root[data-state="checked"] svg {
@@ -299,7 +299,7 @@
   button[role="radio"][data-state="checked"] {
     background-color: #FF7D29 !important;
     border-color: #FF7D29 !important;
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
   }
   
   button[role="radio"]:focus-visible {
@@ -308,13 +308,13 @@
   
   .dark button[role="radio"] {
     border-color: #4A2D19 !important;
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
     background-color: #2D1D14 !important;
   }
   
   .dark button[role="radio"][data-state="checked"] {
-    background-color: #FFEEA9 !important;
-    border-color: #FFEEA9 !important;
+    background-color: #FDF5E6 !important;
+    border-color: #FDF5E6 !important;
     color: #7B4019 !important;
   }
   
@@ -328,7 +328,7 @@
   }
   
   button[role="checkbox"][data-state="checked"] svg {
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
   }
   
   .dark button[role="checkbox"] {
@@ -337,8 +337,8 @@
   }
   
   .dark button[role="checkbox"][data-state="checked"] {
-    background-color: #FFEEA9 !important;
-    border-color: #FFEEA9 !important;
+    background-color: #FDF5E6 !important;
+    border-color: #FDF5E6 !important;
   }
   
   .dark button[role="checkbox"][data-state="checked"] svg {
@@ -357,7 +357,7 @@
   }
   
   .success-popup-icon-container {
-    background-color: #FFEEA9 !important; /* Light cream background */
+    background-color: #FDF5E6 !important; /* Old Lace background */
   }
   
   .success-popup-icon {
@@ -379,7 +379,7 @@
   
   .dark .success-popup-container {
     background-color: #2D1D14 !important; /* Dark brown background */
-    color: #FFEEA9 !important; /* Light cream text */
+    color: #FDF5E6 !important; /* Old Lace text */
     border: 2px solid #4A2D19 !important; /* Dark brown border */
   }
   
@@ -392,7 +392,7 @@
   }
   
   .dark .success-popup-title {
-    color: #FFEEA9 !important; /* Light cream title */
+    color: #FDF5E6 !important; /* Old Lace title */
   }
   
   .dark .success-popup-text {
@@ -416,12 +416,12 @@
   
   .dark .bg-white {
     background-color: #2D1D14 !important;
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
     border: 2px solid #4A2D19 !important;
   }
   
   .bg-green-100 {
-    background-color: #FFEEA9 !important;
+    background-color: #FDF5E6 !important;
   }
   
   .dark .bg-green-100 {
@@ -468,7 +468,7 @@
   .dark .card:has(.testimonial),
   .dark .card:has([data-testid="testimonial"]) {
     background-color: #2D1D14 !important;
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
     border: 1px solid #4A2D19 !important;
   }
   
@@ -480,7 +480,7 @@
   .dark [class*="testimonial"] *,
   .dark .card:has(.testimonial) *,
   .dark .card:has([data-testid="testimonial"]) * {
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
   }
   
   /* Fix Footer Colors */
@@ -488,13 +488,13 @@
   .footer,
   [data-testid="footer"] {
     background-color: #7B4019 !important;
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
   }
   
   footer *,
   .footer *,
   [data-testid="footer"] * {
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
   }
   
   footer a:hover,
@@ -530,7 +530,7 @@
   .dark .text-slate-900,
   .dark .text-zinc-900,
   .dark .text-neutral-900 {
-    color: #FFEEA9 !important;
+    color: #FDF5E6 !important;
   }
   
   /* Ensure star ratings are visible */

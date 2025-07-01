@@ -99,6 +99,7 @@ export function LoginForm({
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               id="password"
+              placeholder="•••••••••"
               type={showPassword ? "text" : "password"}
               required
               disabled={loading}
