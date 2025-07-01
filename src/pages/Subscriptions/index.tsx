@@ -1,36 +1,32 @@
 import SubscriptionForm from "@/components/subscription/form";
+import { useAuth } from "@/hooks/AuthContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Subscription() {
 
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
-
+  const { user, loading: authLoading } = useAuth();
 
   useEffect(() => {
-
-    const checkAuthentication = () => {
-      // Simulasi pengecekan autentikasi
-      const token = localStorage.getItem('token'); // Ganti dengan logika autentikasi yang sesuai
-      if (!token) {
-        navigate('/login');
-        return;
-      }
-      setIsAuthenticated(true);
+    // Wait for auth to finish loading
+    if (authLoading) {
+      return;
     }
 
-    checkAuthentication
+    // If not authenticated, redirect to login
+    if (!user) {
+      navigate('/login');
+      return;
+    }
 
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800);
+    // User is authenticated, stop loading
+    setLoading(false);
+  }, [user, authLoading, navigate]);
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
+  // Show loading while checking authentication
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center pt-20">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -39,8 +35,8 @@ export default function Subscription() {
     );
   }
 
-  // Jika belum authenticated, tampilkan pesan atau redirect
-  if (!isAuthenticated) {
+  // If user is not authenticated (shouldn't reach here due to redirect)
+  if (!user) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center pt-20">
         <div className="text-center">

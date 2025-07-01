@@ -187,6 +187,164 @@
 }
 
 @layer components {
+
+  /* Radio Button Styling - Sea Catering Theme */
+  [data-radix-collection-item] {
+    border-color: #FFBF78 !important; /* Medium orange border */
+  }
+  
+  [data-radix-collection-item][data-state="checked"] {
+    background-color: #FF7D29 !important; /* Vibrant orange when selected */
+    border-color: #FF7D29 !important;
+  }
+  
+  [data-radix-collection-item][data-state="checked"]::before {
+    background-color: #FFEEA9 !important; /* Light cream dot */
+  }
+  
+  /* Dark mode radio buttons */
+  .dark [data-radix-collection-item] {
+    border-color: #4A2D19 !important; /* Dark brown border */
+    background-color: #2D1D14 !important; /* Dark background */
+  }
+  
+  .dark [data-radix-collection-item][data-state="checked"] {
+    background-color: #FFEEA9 !important; /* Light cream when selected */
+    border-color: #FFEEA9 !important;
+  }
+  
+  .dark [data-radix-collection-item][data-state="checked"]::before {
+    background-color: #7B4019 !important; /* Rich brown dot */
+  }
+  
+  /* Checkbox Styling - Sea Catering Theme */
+  [type="checkbox"] {
+    accent-color: #FF7D29 !important; /* Vibrant orange */
+    border-color: #FFBF78 !important; /* Medium orange border */
+  }
+  
+  [type="checkbox"]:checked {
+    background-color: #FF7D29 !important;
+    border-color: #FF7D29 !important;
+  }
+  
+  /* Dark mode checkboxes */
+  .dark [type="checkbox"] {
+    accent-color: #FFEEA9 !important; /* Light cream */
+    border-color: #4A2D19 !important; /* Dark brown border */
+  }
+  
+  .dark [type="checkbox"]:checked {
+    background-color: #FFEEA9 !important;
+    border-color: #FFEEA9 !important;
+  }
+  
+  /* Shadcn Radio Group Item Styling */
+  .radio-group-item {
+    border-color: #FFBF78 !important;
+    color: #7B4019 !important;
+  }
+  
+  .radio-group-item[data-state="checked"] {
+    background-color: #FF7D29 !important;
+    border-color: #FF7D29 !important;
+    color: #FFEEA9 !important;
+  }
+  
+  .dark .radio-group-item {
+    border-color: #4A2D19 !important;
+    color: #FFEEA9 !important;
+  }
+  
+  .dark .radio-group-item[data-state="checked"] {
+    background-color: #FFEEA9 !important;
+    border-color: #FFEEA9 !important;
+    color: #7B4019 !important;
+  }
+  
+  /* Shadcn Checkbox Styling */
+  .checkbox-root {
+    border-color: #FFBF78 !important;
+  }
+  
+  .checkbox-root[data-state="checked"] {
+    background-color: #FF7D29 !important;
+    border-color: #FF7D29 !important;
+  }
+  
+  .checkbox-root[data-state="checked"] svg {
+    color: #FFEEA9 !important;
+  }
+  
+  .dark .checkbox-root {
+    border-color: #4A2D19 !important;
+    background-color: #2D1D14 !important;
+  }
+  
+  .dark .checkbox-root[data-state="checked"] {
+    background-color: #FFEEA9 !important;
+    border-color: #FFEEA9 !important;
+  }
+  
+  .dark .checkbox-root[data-state="checked"] svg {
+    color: #7B4019 !important;
+  }
+  
+  /* More specific selectors for Radix components */
+  button[role="radio"] {
+    border-color: #FFBF78 !important;
+    color: #7B4019 !important;
+  }
+  
+  button[role="radio"][data-state="checked"] {
+    background-color: #FF7D29 !important;
+    border-color: #FF7D29 !important;
+    color: #FFEEA9 !important;
+  }
+  
+  button[role="radio"]:focus-visible {
+    outline-color: #FF7D29 !important;
+  }
+  
+  .dark button[role="radio"] {
+    border-color: #4A2D19 !important;
+    color: #FFEEA9 !important;
+    background-color: #2D1D14 !important;
+  }
+  
+  .dark button[role="radio"][data-state="checked"] {
+    background-color: #FFEEA9 !important;
+    border-color: #FFEEA9 !important;
+    color: #7B4019 !important;
+  }
+  
+  button[role="checkbox"] {
+    border-color: #FFBF78 !important;
+  }
+  
+  button[role="checkbox"][data-state="checked"] {
+    background-color: #FF7D29 !important;
+    border-color: #FF7D29 !important;
+  }
+  
+  button[role="checkbox"][data-state="checked"] svg {
+    color: #FFEEA9 !important;
+  }
+  
+  .dark button[role="checkbox"] {
+    border-color: #4A2D19 !important;
+    background-color: #2D1D14 !important;
+  }
+  
+  .dark button[role="checkbox"][data-state="checked"] {
+    background-color: #FFEEA9 !important;
+    border-color: #FFEEA9 !important;
+  }
+  
+  .dark button[role="checkbox"][data-state="checked"] svg {
+    color: #7B4019 !important;
+  }
+
   /* Success Popup Styling - Consistent with Sea Catering Theme */
   .success-popup-overlay {
     background-color: rgba(26, 15, 10, 0.5) !important; /* Dark brown overlay */

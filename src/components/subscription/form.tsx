@@ -388,6 +388,7 @@ export default function SubscriptionForm() {
                     <Label htmlFor="name">Name</Label>
                     <Input
                       id="name"
+                      className="border-accent"
                       placeholder="Enter your name"
                       value={formData.name}
                       onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
@@ -398,6 +399,7 @@ export default function SubscriptionForm() {
                     <Label htmlFor="phone">Phone Number</Label>
                     <Input
                       id="phone"
+                      className="border-accent"
                       type="tel"
                       placeholder="Enter your phone number"
                       value={formData.phoneNumber}
@@ -634,7 +636,6 @@ export default function SubscriptionForm() {
             <DialogTitle>Subscription Created Successfully!</DialogTitle>
             <DialogDescription>
               Your subscription plan has been created and will be active for 30 days starting from today.
-              Total amount: Rp {calculateTotal().toLocaleString()}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
